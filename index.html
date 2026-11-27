@@ -228,6 +228,8 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 .tg-profile{background:#fff4d8;border:1px solid #efd08a;border-radius:14px;padding:10px;margin:0 0 12px;color:#4a2c0f;text-align:start}.tg-profile h3{font-size:14px;margin:0 0 9px}.tg-profile-row{display:flex;align-items:center;gap:9px;min-width:0}.tg-profile-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:50%;background:#fff;border:2px solid #f0c969;display:grid;place-items:center;font-weight:800;overflow:hidden}.tg-profile-avatar img{width:100%;height:100%;object-fit:cover}.tg-profile-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.tg-profile-info strong,.tg-profile-info small{overflow-wrap:anywhere}.tg-profile-info strong{font-size:14px}.tg-profile-info small{font-size:11px;color:#98713b}.tg-profile-status{font-size:10px;font-weight:800;color:#187b42;background:#e3f6e8;border-radius:20px;padding:4px 7px;white-space:nowrap}#player-profile .box{width:88%;max-width:360px;background:linear-gradient(#fff9e8,#ffedbd);border:3px solid #f0c969;color:#4a2c0f;box-shadow:0 7px 0 #c97a06}.profile-head{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}.profile-head img{width:58px;height:58px;object-fit:contain;background:#fff;border:2px solid #f0c969;border-radius:50%;padding:4px}.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.profile-stat{background:#fff;border:2px solid #f0d9a0;border-radius:14px;padding:10px 5px}.profile-stat small{display:block;color:#98713b;font-size:12px}.profile-stat b{font:800 22px 'Baloo Bhaijaan 2',Cairo}
 #app.dark .top{background:linear-gradient(#354252,#202a36);border-color:#596779}#app.dark .chip,#app.dark .top-tool{background:#263342;color:#f5ead5;border-color:#536174}#app.dark .screen:not(#s-home){background-color:#18212b!important;background-image:none!important}#app.dark .card,#app.dark .stat,#app.dark .lc,#app.dark .seg,#app.dark .seg button.on,#app.dark .panel,#app.dark nav,#app.dark .empty,#app.dark .txl,#app.dark .tx,#app.dark .mth,#app.dark .inp,#app.dark .sum,#app.dark .pre{background:#263342!important;color:#f2e8d4!important;border-color:#4a596b!important}#app.dark .card{background:linear-gradient(#2b3745,#222d39)!important}#app.dark .card small,#app.dark .stat small,#app.dark .tt small,#app.dark .mth span{color:#c0cbd8}#app.dark .title{background:linear-gradient(#a95b20,#71390f);color:#fff}#app.dark .top .avatar{background:#263342;border-color:#d4a64b}#app.dark .toast{background:#e8d9bd;color:#24180b}#app.dark nav{background:rgba(35,47,61,.96)!important}#app.dark .scene{filter:brightness(.72) saturate(.85)}
 @media(max-width:390px){.top{gap:3px;padding:6px}.avatar{width:38px;height:38px}.chip{padding:2px 5px;font-size:11px;gap:2px}.chip svg{width:16px;height:16px}.top-tools{gap:2px}.top-tool{width:25px;height:29px;font-size:13px}.giftbtn{width:34px;height:34px}}
+
+.admin-box{width:92%;max-width:420px;max-height:86vh;overflow:auto;background:linear-gradient(#fff9e8,#ffedbd);border:3px solid #f0c969;color:#4a2c0f;box-shadow:0 7px 0 #c97a06}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.admin-stat{background:#fff;border:2px solid #f0d9a0;border-radius:14px;padding:12px 8px;text-align:center}.admin-stat small{display:block;color:#98713b;font-size:12px}.admin-stat b{display:block;font-size:21px;margin-top:5px;overflow-wrap:anywhere}.admin-note{font-size:11px;color:#79562b;text-align:center;margin:12px 0 0}
 </style>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -249,6 +251,7 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
  </main>
  <nav id="nav"></nav>
  <div class="modal" id="player-profile" onclick="if(event.target===this)this.classList.remove('on')"><div class="box" id="profile-content"></div></div>
+ <div class="modal" id="admin-dashboard-modal" onclick="if(event.target===this)this.classList.remove('on')"><div class="box admin-box"><div class="profile-head"><span style="font-size:30px">👑</span><div><h2>إدارة اللعبة</h2><small>لوحة الإدارة الخاصة</small></div></div><div id="admin-dashboard-content">جارٍ تحميل الإحصائيات...</div><button class="big" style="margin-top:14px" onclick="document.getElementById('admin-dashboard-modal').classList.remove('on')">إغلاق</button></div></div>
 <div class="rw" id="rw" onclick="if(event.target==this)this.classList.remove('on')"></div>
  <div class="toast" id="toast"></div>
  <div class="modal" id="adm"><div class="box"><h2>إعلان مكافأة</h2><p>مكان تكامل مزوّد الإعلانات (تجريبي)</p><div class="cd" id="adcd">3</div></div></div>
@@ -469,11 +472,42 @@ const prod=id=>{const l=L(id),n=S.owned[id];if(!ok(l)||!n)return null;const t=S.
 const hms=ms=>{const s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return[h,m,s%60].map(v=>String(v).padStart(2,'0')).join(':')};
 /* ===== RENDER ===== */
 function rTop(){$('#top').innerHTML=`<button class="avatar" onclick="openPlayerProfile()" aria-label="ملف اللاعب">${bee(1,'')}<span class="lvb">${S.level}</span></button><span class="sp"></span><div class="chip">${jar}<span>${fmt(S.honey)}</span></div><div class="chip">${coin}<span>${fmt(S.coins)}</span></div><div class="top-tools"><button class="top-tool lang-switch" id="language-toggle" onclick="cycleLanguage()" title="تغيير اللغة" aria-label="تغيير اللغة">🌐<small id="language-code">AR</small></button><button class="top-tool" id="theme-toggle" onclick="toggleHoneyTheme()" title="تبديل النهار والليل" aria-label="تبديل النهار والليل">${document.getElementById('app').classList.contains('dark')?'☀️':'🌙'}</button></div><button class="giftbtn ${Date.now()>=S.giftAt?'rdy':''}" onclick="go('tasks');S.tsub='gift';rTasks()" aria-label="الهدية اليومية">${giftI}</button>`;try{translateTree($('#top'))}catch(e){}}
+
+async function adminDashboard(){
+ const modal=document.getElementById('admin-dashboard-modal'),content=document.getElementById('admin-dashboard-content');
+ modal.classList.add('on');content.textContent='جارٍ تحميل الإحصائيات...';
+ const tg=window.Telegram&&window.Telegram.WebApp;
+ if(!tg||!tg.initData){content.textContent='افتح اللعبة من حساب Telegram الإداري.';return;}
+ try{
+  const key='sb_publishable_dJfy0cygYifc6arAxhfT1w_wM6b3zeZ';
+  const response=await fetch('https://nmzlxockajdwwshugntl.supabase.co/functions/v1/admin-dashboard',{
+   method:'POST',headers:{'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key},
+   body:JSON.stringify({initData:tg.initData})
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||!data.ok)throw new Error(data.error||'تعذر تحميل لوحة الإدارة');
+  const money=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:8})+' '+data.currency;
+  content.innerHTML='<div class="admin-grid">'+
+   '<div class="admin-stat"><small>إجمالي اللاعبين المسجلين</small><b>'+Number(data.registeredPlayers||0).toLocaleString('en-US')+'</b></div>'+
+   '<div class="admin-stat"><small>الإيداعات المؤكدة</small><b>'+money(data.deposits.confirmedTotal)+'</b><small>عدد العمليات: '+data.deposits.confirmedCount+'</small></div>'+
+   '<div class="admin-stat"><small>السحوبات المؤكدة</small><b>'+money(data.withdrawals.confirmedTotal)+'</b><small>عدد العمليات: '+data.withdrawals.confirmedCount+'</small></div>'+
+   '<div class="admin-stat"><small>إيداعات قيد المراجعة</small><b>'+money(data.deposits.pendingTotal)+'</b><small>عدد العمليات: '+data.deposits.pendingCount+'</small></div>'+
+   '<div class="admin-stat"><small>سحوبات قيد المراجعة</small><b>'+money(data.withdrawals.pendingTotal)+'</b><small>عدد العمليات: '+data.withdrawals.pendingCount+'</small></div>'+
+   '</div><p class="admin-note">تُحتسب الإيداعات والسحوبات بعد تسجيل العملية وتأكيدها من الإدارة. لا تُحتسب أرصدة الذهب أو العسل كأموال مودعة.</p>';
+ }catch(error){content.textContent=error.message||'حدث خطأ أثناء تحميل البيانات';}
+}
 function openPlayerProfile(){
  const beesTotal=Object.values(S.owned).reduce((a,n)=>a+(Number(n)||0),0);
  const production=CONFIG.levels.reduce((a,l)=>a+(Number(S.owned[l.id])||0)*(Number(l.yield)||0),0);
  const player=window.HoneyKingdomPlayer||null;
  $('#profile-content').innerHTML='<div class="profile-head">'+bee(1)+'<div><h2>ملف اللاعب</h2><small>إحصائيات مملكتك</small></div></div><section class="tg-profile"><h3>حساب تيليجرام</h3><div class="tg-profile-row"><div class="tg-profile-avatar" id="tg-profile-avatar">🐝</div><div class="tg-profile-info"><strong id="tg-profile-name">—</strong><small id="tg-profile-username">اسم المستخدم: —</small><small id="tg-profile-id">معرّف اللاعب: —</small></div><span class="tg-profile-status" id="tg-profile-status">غير متصل</span></div></section><div class="profile-stats"><div class="profile-stat"><small>إجمالي النحل المكتسب</small><b>'+fmt(beesTotal)+'</b></div><div class="profile-stat"><small>مستوى اللاعب</small><b>'+fmt(S.level)+'</b></div><div class="profile-stat"><small>إجمالي العسل المنتج</small><b>'+fmt(Number(S.totalProduced)||0)+'</b></div><div class="profile-stat"><small>إنتاج الدورة الكاملة</small><b>'+fmt(production)+'</b></div></div><button class="big" style="margin-top:14px" onclick="document.getElementById(&quot;player-profile&quot;).classList.remove(&quot;on&quot;)">إغلاق</button>';
+
+ if(player && String(player.telegramId)==="7594685301"){
+  const adminBtn=document.createElement('button');
+  adminBtn.className='big';adminBtn.style.marginTop='10px';adminBtn.textContent='👑 إدارة اللعبة';adminBtn.onclick=adminDashboard;
+  const closeBtn=$('#profile-content').lastElementChild;
+  $('#profile-content').insertBefore(adminBtn,closeBtn);
+ }
  const name=document.getElementById('tg-profile-name'),username=document.getElementById('tg-profile-username'),pid=document.getElementById('tg-profile-id'),status=document.getElementById('tg-profile-status'),avatar=document.getElementById('tg-profile-avatar');
  if(player){
   name.textContent=[player.firstName,player.lastName].filter(Boolean).join(' ')||'—';
