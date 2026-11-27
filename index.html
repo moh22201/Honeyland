@@ -262,27 +262,44 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 (function(){const tg=window.Telegram&&window.Telegram.WebApp;if(!tg)return;try{tg.ready();tg.expand();if(tg.setHeaderColor)tg.setHeaderColor('#f5a623');if(tg.setBackgroundColor)tg.setBackgroundColor('#2b1a08');}catch(e){console.warn('Telegram WebApp setup:',e)}})();
 
 // Secure Telegram identity handshake (the server validates Telegram initData).
-(function(){
+window.HoneyKingdomAuthStatus={state:'checking',message:'جارٍ التحقق من حساب Telegram'};
+window.authenticateHoneyKingdom=async function(){
  const tg=window.Telegram&&window.Telegram.WebApp;
- if(!tg||!tg.initData)return;
+ if(!tg){
+  window.HoneyKingdomAuthStatus={state:'error',message:'لم يتم تحميل Telegram WebApp SDK. أغلق اللعبة وافتحها من زر اللعبة داخل البوت.'};
+  window.dispatchEvent(new Event('honeykingdom:auth-status'));
+  return false;
+ }
+ if(!tg.initData){
+  window.HoneyKingdomAuthStatus={state:'error',message:'Telegram لم يرسل بيانات المصادقة. افتح اللعبة من زر Play داخل محادثة البوت، وليس من رابط المتصفح.'};
+  window.dispatchEvent(new Event('honeykingdom:auth-status'));
+  return false;
+ }
+ window.HoneyKingdomAuthStatus={state:'checking',message:'جارٍ ربط حسابك…'};
+ window.dispatchEvent(new Event('honeykingdom:auth-status'));
  const SUPABASE_URL='https://nmzlxockajdwwshugntl.supabase.co';
  const SUPABASE_KEY='sb_publishable_dJfy0cygYifc6arAxhfT1w_wM6b3zeZ';
- fetch(SUPABASE_URL+'/functions/v1/telegram-auth',{
+ try{
+  const response=await fetch(SUPABASE_URL+'/functions/v1/telegram-auth',{
    method:'POST',
-   headers:{
-     'Content-Type':'application/json',
-     'apikey':SUPABASE_KEY,
-     'Authorization':'Bearer '+SUPABASE_KEY
-   },
+   headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
    body:JSON.stringify({initData:tg.initData})
- }).then(async response=>{
-   const data=await response.json().catch(()=>({}));
-   if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));
-   window.HoneyKingdomPlayer=data.player;
-   window.dispatchEvent(new CustomEvent('honeykingdom:authenticated',{detail:data.player}));
- }).catch(error=>console.warn('Honey Kingdom account link:',error));
-})();
-
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));
+  window.HoneyKingdomPlayer=data.player;
+  window.HoneyKingdomAuthStatus={state:'connected',message:'الحساب متصل'};
+  window.dispatchEvent(new CustomEvent('honeykingdom:authenticated',{detail:data.player}));
+  window.dispatchEvent(new Event('honeykingdom:auth-status'));
+  return true;
+ }catch(error){
+  console.error('Honey Kingdom Telegram authentication:',error);
+  window.HoneyKingdomAuthStatus={state:'error',message:'تعذر ربط الحساب: '+(error.message||'خطأ غير معروف')};
+  window.dispatchEvent(new Event('honeykingdom:auth-status'));
+  return false;
+ }
+};
+window.authenticateHoneyKingdom();
 /* ===== CONFIG: edit economics here only (null = not defined yet) ===== */
 const CONFIG={
  devSimulateAds:false,  // rewarded-ad simulation disabled until a real server-verified ad provider is connected
@@ -585,10 +602,27 @@ function openPlayerProfile(){
  }else{
   name.textContent='—';username.textContent='افتح اللعبة من Telegram لربط حسابك';pid.textContent='معرّف اللاعب: —';status.textContent='غير متصل';
  }
+ if(!player){
+  const authBox=document.createElement('section');
+  authBox.className='tg-profile';
+  authBox.id='telegram-auth-help';
+  const auth=window.HoneyKingdomAuthStatus||{state:'checking',message:'جارٍ التحقق من حساب Telegram'};
+  authBox.innerHTML='<h3>حالة الاتصال</h3><p id="telegram-auth-message" style="font-size:12px;line-height:1.7"></p><button class="btn g" id="telegram-auth-retry" style="width:100%">إعادة المحاولة</button>';
+  authBox.querySelector('#telegram-auth-message').textContent=auth.message;
+  authBox.querySelector('#telegram-auth-retry').onclick=()=>{authBox.querySelector('#telegram-auth-message').textContent='جارٍ إعادة المحاولة…';window.authenticateHoneyKingdom()};
+  const stats=$('#profile-content .profile-stats');
+  if(stats)stats.parentNode.insertBefore(authBox,stats);
+ }
  $('#player-profile').classList.add('on');
  try{translateTree($('#player-profile'))}catch(e){}
 }
 window.addEventListener('honeykingdom:authenticated',()=>{const modal=document.getElementById('player-profile');if(modal&&modal.classList.contains('on'))openPlayerProfile()});
+window.addEventListener('honeykingdom:auth-status',()=>{
+ const modal=document.getElementById('player-profile');
+ if(!modal||!modal.classList.contains('on')||window.HoneyKingdomPlayer)return;
+ const msg=document.getElementById('telegram-auth-message');
+ if(msg)msg.textContent=(window.HoneyKingdomAuthStatus||{}).message||'تعذر الاتصال';
+});
 function toggleHoneyTheme(){const app=$('#app'),dark=app.classList.toggle('dark');try{localStorage.setItem('honeyland-theme',dark?'dark':'light')}catch(e){}const b=$('#theme-toggle');if(b)b.textContent=dark?'☀️':'🌙'}
 
 const LANGS=['ar','en','fr'];
