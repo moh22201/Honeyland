@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>مملكة العسل</title>
+<title>Honey Kingdom</title>
 <meta name="theme-color" content="#f5a623">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+
 <script src="https://unpkg.com/@tonconnect/ui@5.0.4/dist/tonconnect-ui.min.js"></script>
 <style>
 :root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22);
@@ -13,10 +13,10 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 @media (prefers-color-scheme:dark){:root{--ink:#4a2c0f}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;background:#2b1a08;font-family:Cairo,system-ui,sans-serif;color:var(--ink);overflow:hidden}
-h1,h2,h3,.disp{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;margin:0}
+html,body{height:100%;margin:0;background:#2b1a08;font-family:Arial,system-ui,sans-serif;color:var(--ink);overflow:hidden}
+h1,h2,h3,.disp{font-family:"Arial",Arial,sans-serif;margin:0}
 #app{position:relative;max-width:480px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
-.top-tool.lang-switch{position:relative;display:flex;align-items:center;justify-content:center;gap:2px;font-size:19px}.top-tool.lang-switch small{font:800 9px Cairo;background:#fff;border-radius:6px;padding:1px 3px;color:#75430b}.top{display:flex;gap:6px;align-items:center;padding:8px 10px;background:linear-gradient(#ffd45e,#f5a623);border-bottom:3px solid var(--honey-d);z-index:5}
+.top-tool.lang-switch{position:relative;display:flex;align-items:center;justify-content:center;gap:2px;font-size:19px}.top-tool.lang-switch small{font:800 9px Arial;background:#fff;border-radius:6px;padding:1px 3px;color:#75430b}.top{display:flex;gap:6px;align-items:center;padding:8px 10px;background:linear-gradient(#ffd45e,#f5a623);border-bottom:3px solid var(--honey-d);z-index:5}
 .avatar{width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.2);flex:none}
 .lvl{font-size:12px;font-weight:700;line-height:1.1}
 .lvl b{display:block;font-size:14px}
@@ -63,20 +63,20 @@ button:active{transform:scale(.96)}
 .panel.min svg{width:34px;height:34px}
 .dot{position:absolute;top:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#e53935;border:2px solid #fff}
 .pl{flex:1;min-width:0}.t1{display:flex;justify-content:space-between;font-size:12px;font-weight:700}
-.cts{font:700 12px Cairo;direction:ltr;text-align:center}
+.cts{font:700 12px Arial;direction:ltr;text-align:center}
 .sm{width:auto!important;padding:7px 12px!important;font-size:16px!important;flex:none}
-.xb{position:absolute;top:-10px;left:-4px;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:#fff;font:800 14px/1 Cairo;color:var(--ink);padding:0}
+.xb{position:absolute;top:-10px;left:-4px;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:#fff;font:800 14px/1 Arial;color:var(--ink);padding:0}
 .row{display:flex;justify-content:space-between;gap:6px;font-size:13px}
 .stat{flex:1;background:#fff;border-radius:12px;padding:5px;text-align:center;border:2px solid var(--line)}
 .stat small{display:block;color:#9a7440;font-size:11px}
 .stat b{font-size:14px}
 .bar{height:12px;border-radius:8px;background:#f1e2b8;overflow:hidden;margin:8px 0}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,#ffd45e,#f5a623);width:0;transition:width 1s linear}
-.big{width:100%;border:0;border-radius:20px;padding:10px;background:linear-gradient(#7ed957,#3fae3a);color:#fff;font:800 20px "Baloo Bhaijaan 2",Cairo;box-shadow:0 6px 0 #2a7a27;text-shadow:0 2px 0 rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;line-height:1.2}
-.big small{font:700 12px Cairo;display:flex;gap:5px;align-items:center;background:rgba(0,0,0,.18);border-radius:10px;padding:1px 9px;margin-top:3px}
+.big{width:100%;border:0;border-radius:20px;padding:10px;background:linear-gradient(#7ed957,#3fae3a);color:#fff;font:800 20px "Arial",Arial;box-shadow:0 6px 0 #2a7a27;text-shadow:0 2px 0 rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.big small{font:700 12px Arial;display:flex;gap:5px;align-items:center;background:rgba(0,0,0,.18);border-radius:10px;padding:1px 9px;margin-top:3px}
 .big:disabled,.btn:disabled{filter:grayscale(.85);opacity:.7;box-shadow:none}
 .lvlchips{display:flex;gap:6px;margin-bottom:6px}
-.lc{flex:1;border:2px solid var(--line);background:#fff;border-radius:12px;font:700 12px Cairo;padding:2px;color:var(--ink)}
+.lc{flex:1;border:2px solid var(--line);background:#fff;border-radius:12px;font:700 12px Arial;padding:2px;color:var(--ink)}
 .lc.on{background:#ffe3a0;border-color:var(--honey)}
 /* shop */
 .pad{padding:12px 12px 96px}
@@ -87,19 +87,19 @@ button:active{transform:scale(.96)}
 .cardhead .art{width:76px;height:76px;border-radius:18px;background:radial-gradient(#fff,#ffe9a8);border:2px solid var(--line);display:grid;place-items:center;flex:none}
 .cardhead .art img{width:68px;height:68px;object-fit:contain;animation:bob 2.4s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-4px)}}
-.badge{display:inline-block;background:var(--honey);color:#fff;border-radius:10px;padding:0 8px;font:800 13px "Baloo Bhaijaan 2"}
+.badge{display:inline-block;background:var(--honey);color:#fff;border-radius:10px;padding:0 8px;font:800 13px "Arial"}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:8px 0}
 .qty{display:flex;align-items:center;gap:8px;margin:6px 0}
-.qty button{width:38px;height:38px;border-radius:12px;border:0;background:#ffe3a0;font:800 22px Cairo;color:var(--ink);box-shadow:0 3px 0 var(--line)}
+.qty button{width:38px;height:38px;border-radius:12px;border:0;background:#ffe3a0;font:800 22px Arial;color:var(--ink);box-shadow:0 3px 0 var(--line)}
 .qty input[type=range]{flex:1;accent-color:var(--honey-d);height:28px}
-.qn{min-width:44px;text-align:center;font:800 20px "Baloo Bhaijaan 2"}
+.qn{min-width:44px;text-align:center;font:800 20px "Arial"}
 .buy{display:flex;gap:8px}
-.btn{flex:1;border:0;border-radius:16px;padding:9px 4px;font:800 14px Cairo;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.btn{flex:1;border:0;border-radius:16px;padding:9px 4px;font:800 14px Arial;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.25)}
 .btn.h{background:linear-gradient(#ffc83d,#e8920b)}.btn.m{background:linear-gradient(#7ed957,#3fae3a)}.btn.o{background:linear-gradient(#ff9a7a,#ef5f3a)}.btn.g{background:#bbb}
 .tot{font-size:13px;text-align:center;font-weight:700;margin:4px 0}
 /* tasks */
 .seg{display:flex;background:#f1e2b8;border-radius:16px;padding:4px;margin-bottom:12px}
-.seg button{flex:1;border:0;background:none;border-radius:12px;padding:7px;font:800 14px Cairo;color:#8a6530}
+.seg button{flex:1;border:0;background:none;border-radius:12px;padding:7px;font:800 14px Arial;color:#8a6530}
 .seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 0 var(--line)}
 .task{display:flex;gap:10px;align-items:center}
 .task .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#e3f4ff;flex:none}
@@ -111,7 +111,7 @@ button:active{transform:scale(.96)}
 @keyframes shake{0%,70%,100%{transform:none}75%{transform:rotate(-5deg)}85%{transform:rotate(5deg)}95%{transform:rotate(-3deg)}}
 .spark{opacity:0}.open .spark{animation:sp 1.2s ease-out forwards}
 @keyframes sp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-50px)}}
-.cd{font:800 30px "Baloo Bhaijaan 2";text-align:center;direction:ltr}
+.cd{font:800 30px "Arial";text-align:center;direction:ltr}
 /* wallet */
 .wbal{display:flex;gap:8px;margin-bottom:12px}
 .wbal .stat{padding:10px}
@@ -125,7 +125,7 @@ button:active{transform:scale(.96)}
 @keyframes rise{to{transform:translate(var(--dx),var(--dy)) scale(.4);opacity:0}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
 .avatar{padding:3px;position:relative}.avatar img{width:100%;height:100%;object-fit:contain;border-radius:50%}
-.lvb{position:absolute;bottom:-5px;left:-5px;min-width:22px;height:22px;padding:0 4px;border-radius:11px;background:#e8590c;color:#fff;font:800 13px/18px "Baloo Bhaijaan 2";text-align:center;border:2px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.lvb{position:absolute;bottom:-5px;left:-5px;min-width:22px;height:22px;padding:0 4px;border-radius:11px;background:#e8590c;color:#fff;font:800 13px/18px "Arial";text-align:center;border:2px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25)}
 body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-action:manipulation}
 .screen{scrollbar-width:none}.screen::-webkit-scrollbar{display:none}
 .top{border-radius:0 0 22px 22px;box-shadow:0 4px 0 rgba(120,70,0,.25)}
@@ -142,8 +142,8 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 @keyframes jb{50%{transform:translateY(-6px) rotate(3deg)}}
 .rays{position:absolute;top:-100px;right:50%;margin-right:-110px;width:220px;height:220px;border-radius:50%;background:repeating-conic-gradient(rgba(255,230,120,.6) 0 10deg,transparent 10deg 20deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 70%);mask:radial-gradient(circle,#000 25%,transparent 70%);animation:spin 12s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.rwt{font:800 36px "Baloo Bhaijaan 2";color:#c97a06;text-shadow:0 2px 0 #fff}
-.rwa{display:inline-flex;align-items:center;gap:8px;background:#fff;border:3px solid #f5a623;border-radius:30px;padding:2px 16px 2px 10px;font:800 30px "Baloo Bhaijaan 2";margin:6px 0 8px;direction:ltr}.rwa svg{width:34px;height:34px}
+.rwt{font:800 36px "Arial";color:#c97a06;text-shadow:0 2px 0 #fff}
+.rwa{display:inline-flex;align-items:center;gap:8px;background:#fff;border:3px solid #f5a623;border-radius:30px;padding:2px 16px 2px 10px;font:800 30px "Arial";margin:6px 0 8px;direction:ltr}.rwa svg{width:34px;height:34px}
 .cf{position:absolute;top:-10px;width:8px;height:12px;border-radius:2px;animation:cf 1.6s ease-out forwards}
 @keyframes cf{to{transform:translate(var(--dx),260px) rotate(540deg);opacity:0}}
 .bw{transform-box:fill-box;transform-origin:50% 60%;animation:flit .22s ease-in-out infinite alternate}
@@ -155,41 +155,41 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 .big.idle{filter:grayscale(.6);opacity:.8}
 .bar i.full{background:linear-gradient(90deg,#ff9a5a,#e8590c)}
 .hud{position:absolute;top:8px;right:8px;display:flex;gap:6px;flex-wrap:wrap;max-width:78%;z-index:4}
-.hb{position:relative;display:flex;align-items:center;gap:2px;background:rgba(255,250,240,.93);border:2px solid var(--line);border-radius:18px;padding:1px 9px 1px 4px;font:800 14px "Baloo Bhaijaan 2";box-shadow:0 3px 0 rgba(120,70,0,.25)}
+.hb{position:relative;display:flex;align-items:center;gap:2px;background:rgba(255,250,240,.93);border:2px solid var(--line);border-radius:18px;padding:1px 9px 1px 4px;font:800 14px "Arial";box-shadow:0 3px 0 rgba(120,70,0,.25)}
 .hb img{width:28px;height:28px;object-fit:contain}
 .hl{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:#e8590c;color:#fff;font-size:10px;line-height:13px;border:2px solid #fff;text-align:center}
 #s-wallet{background:#fff6e4}
 .ic img,.rwjar img{width:100%;height:100%;object-fit:contain}
 .wtop{position:relative;margin:-12px -12px 14px;padding:20px 12px 24px;background:linear-gradient(#3fa6ff,#9bd8ff);text-align:center;color:#fff;border-radius:0 0 26px 26px}
-.wtop b{display:block;font:800 30px "Baloo Bhaijaan 2";text-shadow:-2px -2px 0 #1b6fb8,2px -2px 0 #1b6fb8,-2px 2px 0 #1b6fb8,2px 2px 0 #1b6fb8,0 4px 0 #1b6fb8}
+.wtop b{display:block;font:800 30px "Arial";text-shadow:-2px -2px 0 #1b6fb8,2px -2px 0 #1b6fb8,-2px 2px 0 #1b6fb8,2px 2px 0 #1b6fb8,0 4px 0 #1b6fb8}
 .wtop small{font-weight:700;text-shadow:0 2px 0 rgba(0,0,0,.3)}
-.back{position:absolute;right:12px;top:16px;width:40px;height:40px;border-radius:14px;border:0;background:rgba(255,255,255,.85);font:800 26px/1 Cairo;color:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.back{position:absolute;right:12px;top:16px;width:40px;height:40px;border-radius:14px;border:0;background:rgba(255,255,255,.85);font:800 26px/1 Arial;color:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.2)}
 .bcard{position:relative;border-radius:26px;padding:16px;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.2);overflow:hidden;margin-bottom:12px}
 .bcard.g{background:linear-gradient(#7ed26e,#2e8b3a);text-align:center}.bcard.b{background:linear-gradient(#3b9cf0,#1c63c9)}
-.bal{display:flex;align-items:center;justify-content:center;gap:8px;font:800 44px "Baloo Bhaijaan 2";line-height:1.15}.bal svg{width:44px;height:44px}
+.bal{display:flex;align-items:center;justify-content:center;gap:8px;font:800 44px "Arial";line-height:1.15}.bal svg{width:44px;height:44px}
 .eq{font-weight:700}.pile{position:absolute;top:-2px;left:-2px;width:84px}
 .wb2{display:flex;gap:10px;margin-bottom:12px}
-.wbtn{flex:1;border:0;border-radius:22px;padding:14px;color:#fff;font:800 22px "Baloo Bhaijaan 2";display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 0 rgba(0,0,0,.25);text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.wbtn{flex:1;border:0;border-radius:22px;padding:14px;color:#fff;font:800 22px "Arial";display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 0 rgba(0,0,0,.25);text-shadow:0 2px 0 rgba(0,0,0,.25)}
 .wbtn.g{background:linear-gradient(#97e05a,#4aae33)}.wbtn.b{background:linear-gradient(#64b8ff,#2b7fe0)}.wbtn svg{width:30px;height:30px}
 .rec{display:flex;align-items:center;gap:10px;background:linear-gradient(#fff0b8,#ffd056);border-radius:22px;padding:10px 12px;box-shadow:0 5px 0 #d9a21c;margin-bottom:14px}
 .rec .ri{width:50px;height:50px;border-radius:14px;background:#fff;display:grid;place-items:center}.rec .ri svg{width:34px;height:34px}.rec h3{font-size:18px}.rec small{display:block;font-size:12px;color:#8a6a1a}
-.pill{background:#2e9e45;color:#fff;border-radius:14px;padding:4px 14px;font:800 15px "Baloo Bhaijaan 2";box-shadow:0 3px 0 #1d6e2e;border:0}
+.pill{background:#2e9e45;color:#fff;border-radius:14px;padding:4px 14px;font:800 15px "Arial";box-shadow:0 3px 0 #1d6e2e;border:0}
 .sec{font-size:20px;margin:6px 2px 8px;display:flex;align-items:center;gap:8px}.sec::before{content:"";width:6px;height:22px;border-radius:3px;background:#f5a623}
 .txl{background:#e9f0d8;border-radius:22px;overflow:hidden;border:2px solid #dfe8c8}
 .tx{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #d5dfbd}.tx:last-child{border:0}
 .ti{width:46px;height:46px;border-radius:14px;background:#f3f8e8;display:grid;place-items:center}.ti svg,.ti img{width:30px;height:30px;object-fit:contain}
 .tt{flex:1}.tt small{display:block;color:#7a8a5a;font-size:12px}
-.ta{display:flex;align-items:center;gap:5px;font:800 18px "Baloo Bhaijaan 2";direction:ltr}.ta svg,.ta img{width:24px;height:24px;object-fit:contain}.pos{color:#2e7d32}.neg{color:#c0392b}
+.ta{display:flex;align-items:center;gap:5px;font:800 18px "Arial";direction:ltr}.ta svg,.ta img{width:24px;height:24px;object-fit:contain}.pos{color:#2e7d32}.neg{color:#c0392b}
 .fcard{background:linear-gradient(#fff5d0,#ffe4a0);border:3px solid #f0b43c;border-radius:26px;padding:14px;box-shadow:0 6px 0 #d9a21c;margin-bottom:14px;text-align:center}
-.abox{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:22px;padding:6px 14px;margin:8px 0}.abox svg{width:46px;height:46px}.abox b{font:800 38px "Baloo Bhaijaan 2";direction:ltr}.abox small{font-weight:700;color:#8a6a1a}
+.abox{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:22px;padding:6px 14px;margin:8px 0}.abox svg{width:46px;height:46px}.abox b{font:800 38px "Arial";direction:ltr}.abox small{font-weight:700;color:#8a6a1a}
 .pre-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.pre{border:2px solid #f2d78e;background:#fffaf0;border-radius:16px;padding:8px 2px;font:800 15px "Baloo Bhaijaan 2";display:flex;gap:4px;align-items:center;justify-content:center;color:var(--ink)}.pre svg{width:22px;height:22px}
+.pre{border:2px solid #f2d78e;background:#fffaf0;border-radius:16px;padding:8px 2px;font:800 15px "Arial";display:flex;gap:4px;align-items:center;justify-content:center;color:var(--ink)}.pre svg{width:22px;height:22px}
 .pre.on{background:linear-gradient(#ffb43a,#f08a0a);color:#fff;border-color:#f08a0a;box-shadow:0 4px 0 #b86406}
 .mth{display:flex;align-items:center;gap:12px;background:#e9f0d8;border:2px solid #dfe8c8;border-radius:22px;padding:10px 12px;margin-bottom:10px;width:100%;text-align:right;font-family:inherit;color:var(--ink)}
-.mth svg{width:46px;height:46px}.mth b{font:800 20px "Baloo Bhaijaan 2";display:block}.mth span{color:#6b7a4a;font-weight:700}.mth i{margin-right:auto;font-style:normal;font-size:24px;color:#7a8a5a}
+.mth svg{width:46px;height:46px}.mth b{font:800 20px "Arial";display:block}.mth span{color:#6b7a4a;font-weight:700}.mth i{margin-right:auto;font-style:normal;font-size:24px;color:#7a8a5a}
 .inp{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid #eadfc4;border-radius:20px;padding:6px 10px}.inp svg{width:30px;height:30px}
-.inp input{flex:1;border:0;outline:0;font:800 20px Cairo;background:none;color:var(--ink);min-width:0;direction:ltr;user-select:text;-webkit-user-select:text}
-.paste{border:0;background:#cfe9b0;border-radius:14px;padding:8px 16px;font:800 15px Cairo;color:#2a6a22;box-shadow:0 3px 0 #a8c98a}
+.inp input{flex:1;border:0;outline:0;font:800 20px Arial;background:none;color:var(--ink);min-width:0;direction:ltr;user-select:text;-webkit-user-select:text}
+.paste{border:0;background:#cfe9b0;border-radius:14px;padding:8px 16px;font:800 15px Arial;color:#2a6a22;box-shadow:0 3px 0 #a8c98a}
 .lab{font-weight:800;margin:10px 4px 6px}
 .sum{background:#e9f0d8;border-radius:20px;padding:6px 14px;margin:10px 0}.sum div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #c8d4a8;font-weight:700}.sum div:last-child{border:0}
 
@@ -200,7 +200,7 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 #honey-intro:before{top:7%}#honey-intro:after{bottom:7%;animation-direction:reverse;color:#fff}
 @keyframes intro-drift{to{transform:translateX(8%)}}
 .intro-card{position:relative;width:min(94vw,520px);height:min(88vh,760px);min-height:500px;border:5px solid #fff0ad;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:20px 14px 24px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,245,190,.18));box-shadow:0 16px 45px #7b3e0870,inset 0 0 0 2px #c98219}
-.intro-title{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;color:#713609;font-size:clamp(30px,8vw,48px);font-weight:800;text-shadow:0 3px 0 #ffe7a1,0 5px 12px #9a570b55;line-height:1.1}
+.intro-title{font-family:"Arial",Arial,sans-serif;color:#713609;font-size:clamp(30px,8vw,48px);font-weight:800;text-shadow:0 3px 0 #ffe7a1,0 5px 12px #9a570b55;line-height:1.1}
 .intro-subtitle{color:#75400c;font-weight:800;font-size:15px;margin-top:4px}
 .intro-queen{position:relative;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;width:100%;min-height:0}
 .intro-crown{font-size:clamp(48px,12vw,76px);filter:drop-shadow(0 4px 2px #a55c0b66);margin-bottom:-12px;z-index:2}
@@ -226,7 +226,7 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 .intro-card img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
 #app.dark{--ink:#f2e8d4;--cream:#171d25;--panel:#252d38;--line:#465365;--shadow:0 5px 0 rgba(0,0,0,.35);background:#111820;color:#f2e8d4}
 .top-tools{display:flex;align-items:center;gap:3px;flex:none}.top-tool{width:29px;height:32px;padding:0;border:1px solid rgba(120,70,0,.25);border-radius:9px;background:rgba(255,255,255,.82);font:700 15px Arial;display:grid;place-items:center}.avatar{cursor:pointer}
-.tg-profile{background:#fff4d8;border:1px solid #efd08a;border-radius:14px;padding:10px;margin:0 0 12px;color:#4a2c0f;text-align:start}.tg-profile h3{font-size:14px;margin:0 0 9px}.tg-profile-row{display:flex;align-items:center;gap:9px;min-width:0}.tg-profile-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:50%;background:#fff;border:2px solid #f0c969;display:grid;place-items:center;font-weight:800;overflow:hidden}.tg-profile-avatar img{width:100%;height:100%;object-fit:cover}.tg-profile-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.tg-profile-info strong,.tg-profile-info small{overflow-wrap:anywhere}.tg-profile-info strong{font-size:14px}.tg-profile-info small{font-size:11px;color:#98713b}.tg-profile-status{font-size:10px;font-weight:800;color:#187b42;background:#e3f6e8;border-radius:20px;padding:4px 7px;white-space:nowrap}#player-profile .box{width:88%;max-width:360px;background:linear-gradient(#fff9e8,#ffedbd);border:3px solid #f0c969;color:#4a2c0f;box-shadow:0 7px 0 #c97a06}.profile-head{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}.profile-head img{width:58px;height:58px;object-fit:contain;background:#fff;border:2px solid #f0c969;border-radius:50%;padding:4px}.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.profile-stat{background:#fff;border:2px solid #f0d9a0;border-radius:14px;padding:10px 5px}.profile-stat small{display:block;color:#98713b;font-size:12px}.profile-stat b{font:800 22px 'Baloo Bhaijaan 2',Cairo}
+.tg-profile{background:#fff4d8;border:1px solid #efd08a;border-radius:14px;padding:10px;margin:0 0 12px;color:#4a2c0f;text-align:start}.tg-profile h3{font-size:14px;margin:0 0 9px}.tg-profile-row{display:flex;align-items:center;gap:9px;min-width:0}.tg-profile-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:50%;background:#fff;border:2px solid #f0c969;display:grid;place-items:center;font-weight:800;overflow:hidden}.tg-profile-avatar img{width:100%;height:100%;object-fit:cover}.tg-profile-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.tg-profile-info strong,.tg-profile-info small{overflow-wrap:anywhere}.tg-profile-info strong{font-size:14px}.tg-profile-info small{font-size:11px;color:#98713b}.tg-profile-status{font-size:10px;font-weight:800;color:#187b42;background:#e3f6e8;border-radius:20px;padding:4px 7px;white-space:nowrap}#player-profile .box{width:88%;max-width:360px;background:linear-gradient(#fff9e8,#ffedbd);border:3px solid #f0c969;color:#4a2c0f;box-shadow:0 7px 0 #c97a06}.profile-head{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}.profile-head img{width:58px;height:58px;object-fit:contain;background:#fff;border:2px solid #f0c969;border-radius:50%;padding:4px}.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.profile-stat{background:#fff;border:2px solid #f0d9a0;border-radius:14px;padding:10px 5px}.profile-stat small{display:block;color:#98713b;font-size:12px}.profile-stat b{font:800 22px 'Arial',Arial}
 #app.dark .top{background:linear-gradient(#354252,#202a36);border-color:#596779}#app.dark .chip,#app.dark .top-tool{background:#263342;color:#f5ead5;border-color:#536174}#app.dark .screen:not(#s-home){background-color:#18212b!important;background-image:none!important}#app.dark .card,#app.dark .stat,#app.dark .lc,#app.dark .seg,#app.dark .seg button.on,#app.dark .panel,#app.dark nav,#app.dark .empty,#app.dark .txl,#app.dark .tx,#app.dark .mth,#app.dark .inp,#app.dark .sum,#app.dark .pre{background:#263342!important;color:#f2e8d4!important;border-color:#4a596b!important}#app.dark .card{background:linear-gradient(#2b3745,#222d39)!important}#app.dark .card small,#app.dark .stat small,#app.dark .tt small,#app.dark .mth span{color:#c0cbd8}#app.dark .title{background:linear-gradient(#a95b20,#71390f);color:#fff}#app.dark .top .avatar{background:#263342;border-color:#d4a64b}#app.dark .toast{background:#e8d9bd;color:#24180b}#app.dark nav{background:rgba(35,47,61,.96)!important}#app.dark .scene{filter:brightness(.72) saturate(.85)}
 @media(max-width:390px){.top{gap:3px;padding:6px}.avatar{width:38px;height:38px}.chip{padding:2px 5px;font-size:11px;gap:2px}.chip svg{width:16px;height:16px}.top-tools{gap:2px}.top-tool{width:25px;height:29px;font-size:13px}.giftbtn{width:34px;height:34px}}
 
@@ -525,7 +525,7 @@ const prod=id=>{const l=L(id),n=S.owned[id];if(!ok(l)||!n)return null;const t=S.
  const pct=Math.min(100,el/total*100),amt=Math.floor(n*l.yield*pct/100);return{n,left:Math.max(0,total-el),pct,cap:n*l.yield,amt,full:el>=total,ready:amt>=1}};
 const hms=ms=>{const s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return[h,m,s%60].map(v=>String(v).padStart(2,'0')).join(':')};
 /* ===== RENDER ===== */
-function rTop(){$('#top').innerHTML=`<button class="avatar" onclick="openPlayerProfile()" aria-label="ملف اللاعب">${bee(1,'')}<span class="lvb">${S.level}</span></button><span class="sp"></span><div class="chip">${jar}<span>${fmt(S.honey)}</span></div><div class="chip">${coin}<span>${fmt(S.coins)}</span></div><div class="top-tools"><button class="top-tool lang-switch" id="language-toggle" onclick="cycleLanguage()" title="تغيير اللغة" aria-label="تغيير اللغة">🌐<small id="language-code">AR</small></button><button class="top-tool" id="theme-toggle" onclick="toggleHoneyTheme()" title="تبديل النهار والليل" aria-label="تبديل النهار والليل">${document.getElementById('app').classList.contains('dark')?'☀️':'🌙'}</button></div><button class="giftbtn ${Date.now()>=S.giftAt?'rdy':''}" onclick="go('tasks');S.tsub='gift';rTasks()" aria-label="الهدية اليومية">${giftI}</button>`;try{translateTree($('#top'))}catch(e){}}
+function rTop(){$('#top').innerHTML=`<button class="avatar" onclick="openPlayerProfile()" aria-label="Player profile">${bee(1,'')}<span class="lvb">${S.level}</span></button><span class="sp"></span><div class="chip">${jar}<span>${fmt(S.honey)}</span></div><div class="chip">${coin}<span>${fmt(S.coins)}</span></div><div class="top-tools"><button class="top-tool lang-switch" id="language-toggle" onclick="cycleLanguage()" title="Change language" aria-label="Change language">🌐<small id="language-code">EN</small></button><button class="top-tool" id="theme-toggle" onclick="toggleHoneyTheme()" title="تبديل النهار والليل" aria-label="تبديل النهار والليل">${document.getElementById('app').classList.contains('dark')?'☀️':'🌙'}</button></div><button class="giftbtn ${Date.now()>=S.giftAt?'rdy':''}" onclick="go('tasks');S.tsub='gift';rTasks()" aria-label="Daily gift">${giftI}</button>`;try{translateTree($('#top'))}catch(e){}}
 
 function escHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 async function adminFinancialAction(action,id){
@@ -625,8 +625,8 @@ window.addEventListener('honeykingdom:auth-status',()=>{
 });
 function toggleHoneyTheme(){const app=$('#app'),dark=app.classList.toggle('dark');try{localStorage.setItem('honeyland-theme',dark?'dark':'light')}catch(e){}const b=$('#theme-toggle');if(b)b.textContent=dark?'☀️':'🌙'}
 
-const LANGS=['ar','en','fr'];
-const LANG_NAMES={ar:'العربية',en:'English',fr:'Français'};
+const LANGS=['en','fr'];
+const LANG_NAMES={en:'English',fr:'Français'};
 const LANG_DICT={
 ar:{"ادخل كود برومو":"ادخل كود برومو","أدخل الكود الذي نشرته قناة الأكواد ثم اضغط مطالبة":"أدخل الكود الذي نشرته قناة الأكواد ثم اضغط مطالبة","أدخل الكود هنا":"أدخل الكود هنا","مطالبة":"مطالبة","50–500 عملة ذهبية · لأول 3000 مطالبة لكل كود":"50–500 عملة ذهبية · لأول 3000 مطالبة لكل كود",'الرئيسية':'الرئيسية','النحل':'النحل','المهام':'المهام','المحفظة':'المحفظة','ملف اللاعب':'ملف اللاعب','حساب تيليجرام':'حساب تيليجرام','متصل':'متصل','غير متصل':'غير متصل','اسم المستخدم:':'اسم المستخدم:','معرّف اللاعب:':'معرّف اللاعب:','افتح اللعبة من Telegram لربط حسابك':'افتح اللعبة من Telegram لربط حسابك','إحصائيات مملكتك':'إحصائيات مملكتك', 'إجمالي النحل المكتسب':'إجمالي النحل المكتسب','مستوى اللاعب':'مستوى اللاعب','إجمالي العسل المنتج':'إجمالي العسل المنتج','إنتاج الدورة الكاملة':'إنتاج الدورة الكاملة','برنامج الإحالات':'برنامج الإحالات','ادعُ أصدقاءك واحصل على 50 عسل بعد إكمالهم جميع مهام صفحة المهام.':'ادعُ أصدقاءك واحصل على 50 عسل بعد إكمالهم جميع مهام صفحة المهام.','نسخ رابط الإحالة':'نسخ رابط الإحالة','إغلاق':'إغلاق','الهدية اليومية':'الهدية اليومية','متجر النحل':'متجر النحل','المستوى':'المستوى','شراء بالذهب':'شراء بالذهب','تنفيذ مهام':'تنفيذ مهام','التسجيل في منصات وبوتات ومواقع وإكمال المهام المطلوبة':'التسجيل في منصات وبوتات ومواقع وإكمال المهام المطلوبة','المكافأة':'المكافأة','عملة ذهبية':'عملة ذهبية','مرة واحدة':'مرة واحدة','تم استلام المكافأة':'تم استلام المكافأة','قريباً':'قريباً','انضمام':'انضمام','تحقق':'تحقق','استلام المكافأة · مشاهدة إعلان':'استلام المكافأة · مشاهدة إعلان','جاهزة!':'جاهزة!','افتح الهدية':'افتح الهدية','مشاهدة إعلان':'مشاهدة إعلان','لا توجد معاملات بعد':'لا توجد معاملات بعد','الدفع عبر':'الدفع عبر','سحب':'سحب','تفاصيل السحب':'تفاصيل السحب','عنوان محفظة TON':'عنوان محفظة TON','أدخل المبلغ':'أدخل المبلغ','طلب سحب':'طلب سحب','استثمار العسل':'استثمار العسل','محفظتك':'محفظتك','إدارة الرصيد والسحب':'إدارة الرصيد والسحب','إيداع':'إيداع','سجل المعاملات':'سجل المعاملات','اجمع':'اجمع','اشترِ نحلتك الأولى من قسم النحل':'اشترِ نحلتك الأولى من قسم النحل','الإنتاج متوقف — اجمع العسل':'الإنتاج متوقف — اجمع العسل','مبروك!':'مبروك!','تمت إضافة العملات إلى رصيدك':'تمت إضافة العملات إلى رصيدك','نحلة جديدة انضمت إلى حديقتك':'نحلة جديدة انضمت إلى حديقتك','تمت إضافة العسل إلى رصيدك':'تمت إضافة العسل إلى رصيدك','الحد الأدنى':'الحد الأدنى','رصيد الذهب':'رصيد الذهب','رصيد العسل القابل للسحب':'رصيد العسل القابل للسحب','كم عملة تريد؟':'كم عملة تريد؟','كم عسل تريد استثماره؟':'كم عسل تريد استثماره؟','استثمر الآن':'استثمر الآن','الكل':'الكل','الأدنى':'الأدنى','رجوع':'رجوع','رائع':'رائع','تبديل النهار والليل':'تبديل النهار والليل'},
 en:{"ادخل كود برومو":"Enter promo code","أدخل الكود الذي نشرته قناة الأكواد ثم اضغط مطالبة":"Enter the code published in the promo channel, then tap Claim","أدخل الكود هنا":"Enter code here","مطالبة":"Claim","50–500 عملة ذهبية · لأول 3000 مطالبة لكل كود":"50–500 gold coins · First 3,000 claims per code",'الرئيسية':'Home','النحل':'Bees','المهام':'Tasks','المحفظة':'Wallet','ملف اللاعب':'Player profile','حساب تيليجرام':'Telegram account','متصل':'Connected','غير متصل':'Not connected','اسم المستخدم:':'Username:','معرّف اللاعب:':'Player ID:','افتح اللعبة من Telegram لربط حسابك':'Open the game in Telegram to link your account','إحصائيات مملكتك':'Your kingdom stats', 'إجمالي النحل المكتسب':'Total bees earned','مستوى اللاعب':'Player level','إجمالي العسل المنتج':'Total honey produced','إنتاج الدورة الكاملة':'Full-cycle production','برنامج الإحالات':'Referral program','ادعُ أصدقاءك واحصل على 50 عسل بعد إكمالهم جميع مهام صفحة المهام.':'Invite friends and earn 50 honey after they complete every task on the Tasks page.','نسخ رابط الإحالة':'Copy referral link','إغلاق':'Close','الهدية اليومية':'Daily gift','متجر النحل':'Bee shop','المستوى':'Level','شراء بالذهب':'Buy with gold','تنفيذ مهام':'Complete tasks','التسجيل في منصات وبوتات ومواقع وإكمال المهام المطلوبة':'Register on platforms, bots and websites and complete the required tasks','المكافأة':'Reward','عملة ذهبية':'gold coins','مرة واحدة':'Once only','تم استلام المكافأة':'Reward claimed','قريباً':'Coming soon','انضمام':'Join','تحقق':'Verify','استلام المكافأة · مشاهدة إعلان':'Claim reward · Watch an ad','جاهزة!':'Ready!','افتح الهدية':'Open gift','مشاهدة إعلان':'Watch ad','لا توجد معاملات بعد':'No transactions yet','الدفع عبر':'Pay with','سحب':'Withdraw','تفاصيل السحب':'Withdrawal details','عنوان محفظة TON':'TON wallet address','أدخل المبلغ':'Enter amount','طلب سحب':'Request withdrawal','استثمار العسل':'Honey investment','محفظتك':'Your wallet','إدارة الرصيد والسحب':'Manage balance and withdrawals','إيداع':'Deposit','سجل المعاملات':'Transaction history','اجمع':'Collect','اشترِ نحلتك الأولى من قسم النحل':'Buy your first bee in the Bees section','الإنتاج متوقف — اجمع العسل':'Production paused — collect your honey','مبروك!':'Congratulations!','تمت إضافة العملات إلى رصيدك':'Coins have been added to your balance','نحلة جديدة انضمت إلى حديقتك':'A new bee joined your garden','تمت إضافة العسل إلى رصيدك':'Honey has been added to your balance','الحد الأدنى':'Minimum','رصيد الذهب':'Gold balance','رصيد العسل القابل للسحب':'Withdrawable honey balance','كم عملة تريد؟':'How many coins do you want?','كم عسل تريد استثماره؟':'How much honey do you want to invest?','استثمر الآن':'Invest now','الكل':'All','الأدنى':'Minimum','رجوع':'Back','رائع':'Great','تبديل النهار والليل':'Toggle day/night'},
@@ -714,15 +714,15 @@ Object.assign(LANG_DICT.en,{'إيداع GRAM':'GRAM deposit','اشترِ الذ�
 Object.assign(LANG_DICT.fr,{'إيداع GRAM':'Dépôt en GRAM','اشترِ الذهب بالدفع عبر محفظتك':'Achetez de l’or avec votre portefeuille','كم عملة ذهبية تريد؟':'Quelle quantité d’or souhaitez-vous ?','ذهب':'Or','الإيداع بعملة GRAM · TON':'Dépôt en GRAM · TON','ادفع من محفظة GRAM':'Payer avec le portefeuille GRAM','تم إرسال التحويل، يجري التحقق من الشبكة وإضافة الذهب تلقائياً...':'Transfert envoyé. Vérification du réseau et crédit automatique de l’or...','تم إرسال الإيداع، جارٍ التحقق':'Dépôt envoyé. Vérification en cours...','تم تأكيد الإيداع وإضافة الذهب':'Dépôt confirmé et or crédité','التحويل وصل إلى مرحلة التحقق. سيُضاف الذهب تلقائياً بعد تأكيد الشبكة.':'Le transfert est en cours de vérification. L’or sera crédité après confirmation du réseau.','الإيداع قيد التحقق، لا تعِد إرسال المبلغ':'Dépôt en cours de vérification. Ne renvoyez pas les fonds.','تأكيد المحفظة مطلوب':'Activation du portefeuille requise','فعّل محفظتك أولاً':'Activez d’abord votre portefeuille','ادفع 0.5 GRAM لتفعيل المحفظة قبل تقديم طلب السحب.':'Payez 0,5 GRAM pour activer le portefeuille avant de demander un retrait.','تأكيد المحفظة · 0.5 GRAM':'Activer le portefeuille · 0,5 GRAM','تم إرسال 0.5 GRAM؛ يجري التحقق من التحويل على الشبكة...':'0,5 GRAM envoyé. Vérification du transfert sur la blockchain...','تم إرسال رسوم التفعيل، جارٍ التحقق':'Paiement d’activation envoyé. Vérification en cours...','تم تأكيد المحفظة بنجاح':'Portefeuille activé avec succès','الدفع قيد التحقق، سيتم التفعيل تلقائياً':'Paiement en cours de vérification. Activation automatique après confirmation.','انتهت مهلة ربط المحفظة، حاول مرة أخرى':'Délai de connexion expiré. Réessayez.','اختر شبكة TON الرئيسية في محفظتك':'Sélectionnez le réseau principal TON dans votre portefeuille','تعذر تحميل خدمة محفظة TON Connect':'Impossible de charger le service TON Connect','محفظتك مفعّلة بالفعل':'Votre portefeuille est déjà activé','المحفظة مفعّلة ✓':'Portefeuille activé ✓','تم تأكيد محفظة GRAM ويمكنك تقديم طلب السحب.':'Votre portefeuille GRAM est vérifié. Vous pouvez demander un retrait.','افتح محفظتك ووافق على دفع 0.5 GRAM لتفعيل إمكانية السحب.':'Ouvrez votre portefeuille et approuvez le paiement de 0,5 GRAM pour activer les retraits.','عنوان محفظة GRAM':'Adresse du portefeuille GRAM','كمية العسل للسحب':'Quantité de miel à retirer','الحد الأدنى 10,000 عسل':'Minimum : 10 000 miels','تراجع الإدارة الطلب ثم ترسل GRAM يدوياً.':'L’administration examine la demande puis envoie les GRAM manuellement.','تم تسجيل طلب السحب:':'Demande de retrait enregistrée :','بانتظار مراجعة الإدارة':'En attente de validation par l’administration','المبلغ الدقيق:':'Montant exact :','المبلغ المطلوب:':'Montant requis :','جاري تحميل سعر GRAM...':'Chargement du cours GRAM...','تعذر جلب سعر GRAM حالياً':'Impossible de charger le cours GRAM','أدخل عنوان محفظة GRAM':'Saisissez une adresse de portefeuille GRAM','يجب تأكيد المحفظة أولاً':'Veuillez d’abord activer votre portefeuille','إرسال طلب السحب':'Envoyer la demande de retrait','السحب':'Retrait'});
 LANG_DICT.en['إيداع GRAM · تحقق آلي']='GRAM deposit · automatic verification';LANG_DICT.fr['إيداع GRAM · تحقق آلي']='Dépôt GRAM · vérification automatique';LANG_DICT.en['بانتظار تأكيد التحويل على شبكة TON؛ لا حاجة إلى رمز معاملة من اللاعب.']='Waiting for TON network confirmation; the player does not need to enter a transaction hash.';LANG_DICT.fr['بانتظار تأكيد التحويل على شبكة TON؛ لا حاجة إلى رمز معاملة من اللاعب.']='En attente de confirmation sur TON ; le joueur n’a pas besoin de saisir un hash de transaction.';LANG_DICT.en['تعذر إكمال تفعيل المحفظة']='Could not complete wallet activation';LANG_DICT.fr['تعذر إكمال تفعيل المحفظة']='Impossible de terminer l’activation du portefeuille';LANG_DICT.en['تعذر إتمام الإيداع']='Could not complete the deposit';LANG_DICT.fr['تعذر إتمام الإيداع']='Impossible de terminer le dépôt';LANG_DICT.en['قيمة التحويل غير صحيحة']='Invalid transfer amount';LANG_DICT.fr['قيمة التحويل غير صحيحة']='Montant du transfert invalide';LANG_DICT.en['تعذر فتح المحفظة']='Could not open the wallet';LANG_DICT.fr['تعذر فتح المحفظة']='Impossible d’ouvrir le portefeuille';LANG_DICT.en['إدارة رصيدك والإيداع والسحب']='Manage your balance, deposits and withdrawals';LANG_DICT.fr['إدارة رصيدك والإيداع والسحب']='Gérez votre solde, vos dépôts et vos retraits';LANG_DICT.en['تم إرسال الدفع. سيُفعّل حسابك تلقائياً بعد تأكيد الشبكة.']='Payment sent. Your wallet will activate automatically after network confirmation.';LANG_DICT.fr['تم إرسال الدفع. سيُفعّل حسابك تلقائياً بعد تأكيد الشبكة.']='Paiement envoyé. Votre portefeuille sera activé automatiquement après confirmation.';LANG_DICT.en['رسوم التفعيل: 0.5 TON']='Activation fee: 0.5 GRAM';LANG_DICT.en['ادفع 0.5 TON لتفعيل حساب المحفظة وفتح إمكانية السحب بعد ربط البوت والتحقق من الدفع.']='Pay 0.5 GRAM to activate your wallet and enable withdrawals after on-chain payment verification.';LANG_DICT.fr['رسوم التفعيل: 0.5 TON']='Frais d’activation : 0,5 GRAM';LANG_DICT.fr['ادفع 0.5 TON لتفعيل حساب المحفظة وفتح إمكانية السحب بعد ربط البوت والتحقق من الدفع.']='Payez 0,5 GRAM pour activer votre portefeuille et autoriser les retraits après vérification sur la blockchain.';
 
-let currentLanguage='ar';
+let currentLanguage='en';
 const languageOriginals=new WeakMap();
 let languageObserverBusy=false;
-function translatedText(value,lang){if(lang==='ar')return value;const dict=LANG_DICT[lang];let out=value;Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out}
+function translatedText(value,lang){const dict=LANG_DICT[lang]||LANG_DICT.en;let out=String(value);Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out.replace(/[\u0600-\u06FF]+/g,'').replace(/\s{2,}/g,' ').trim()}
 function translateTree(root){if(!root)return;const lang=currentLanguage;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!languageOriginals.has(n))languageOriginals.set(n,n.nodeValue);const original=languageOriginals.get(n);const next=translatedText(original,lang);if(n.nodeValue!==next){languageObserverBusy=true;n.nodeValue=next;languageObserverBusy=false}}
  const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>['title','aria-label','placeholder','alt'].forEach(attr=>{if(el.hasAttribute(attr)){const key='langOriginal_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);el.setAttribute(attr,translatedText(el.dataset[key],lang))}}))}
-function setLanguage(lang,announce){if(!LANGS.includes(lang))lang='ar';currentLanguage=lang;try{localStorage.setItem('honeyland-language',lang)}catch(e){}document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const code=document.getElementById('language-code');if(code)code.textContent=lang.toUpperCase();const btn=document.getElementById('language-toggle');if(btn){btn.title=LANG_NAMES[lang]+' · Change language';btn.setAttribute('aria-label',btn.title)}translateTree(document.documentElement);document.title=translatedText('مملكة العسل',lang);if(announce)toast(LANG_NAMES[lang])}
+function setLanguage(lang,announce){if(!LANGS.includes(lang))lang='en';currentLanguage=lang;try{localStorage.setItem('honeyland-language',lang)}catch(e){}document.documentElement.lang=lang;document.documentElement.dir='ltr';const code=document.getElementById('language-code');if(code)code.textContent=lang.toUpperCase();const btn=document.getElementById('language-toggle');if(btn){btn.title=LANG_NAMES[lang]+' · Change language';btn.setAttribute('aria-label',btn.title)}translateTree(document.documentElement);document.title='Honey Kingdom';if(announce)toast(LANG_NAMES[lang])}
 function cycleLanguage(){const i=LANGS.indexOf(currentLanguage);setLanguage(LANGS[(i+1)%LANGS.length],true)}
-try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes(savedLang))currentLanguage=savedLang}catch(e){}
+try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes(savedLang))currentLanguage=savedLang;else currentLanguage='en'}catch(e){}
 // Rendering stays independent from translation support; each screen is translated after it is rendered.
 
 (function(){try{if(localStorage.getItem('honeyland-theme')==='dark')$('#app').classList.add('dark')}catch(e){}})();
@@ -740,7 +740,7 @@ function tot(id){const l=L(id),q=S.qty[id];$('#q'+id).textContent=q;$('#t'+id).t
 async function buy(id,m){const l=L(id),q=Math.min(S.qty[id],CONFIG.maxPerLevel-S.owned[id]);if(q<1)return;
  try{const result=await honeyEconomyRequest('buy_bees',{level:id,quantity:q});applyEconomyResult(result);S.qty[id]=1;logTx(`شراء ${q} نحلة`,-q*l.priceCoins,'coin');toast(`تم شراء ${q} نحلة وظهرت في الحديقة`);rTop();rShop();rHome()}catch(e){toast(e.message==='insufficient_gold'?'رصيد الذهب غير كافٍ':e.message==='bee_limit_reached'?'وصلت للحد الأقصى':'تعذر تنفيذ الشراء، حاول مجدداً')}}
 
-function promoCodeHTML(){return `<div class="card" style="border-color:#f5c04a"><h3 style="font-size:17px;margin-bottom:6px">🎟️ ادخل كود برومو</h3><div style="font-size:12px;margin-bottom:8px">أدخل الكود الذي نشرته قناة الأكواد ثم اضغط مطالبة</div><div style="display:flex;gap:7px"><input id="promo-code-input" type="text" maxlength="32" autocomplete="off" autocapitalize="characters" placeholder="أدخل الكود هنا" style="min-width:0;flex:1;border:2px solid #f0d9a0;border-radius:12px;padding:10px;font:700 15px Cairo;text-align:center;text-transform:uppercase;background:#fff;color:#4a2c0f"><button class="btn m" style="flex:0 0 92px" onclick="redeemPromoCode()">مطالبة</button></div><div style="font-size:11px;text-align:center;margin-top:7px;color:#8a6530">50–500 عملة ذهبية · لأول 3000 مطالبة لكل كود</div></div>`}
+function promoCodeHTML(){return `<div class="card" style="border-color:#f5c04a"><h3 style="font-size:17px;margin-bottom:6px">🎟️ ادخل كود برومو</h3><div style="font-size:12px;margin-bottom:8px">أدخل الكود الذي نشرته قناة الأكواد ثم اضغط مطالبة</div><div style="display:flex;gap:7px"><input id="promo-code-input" type="text" maxlength="32" autocomplete="off" autocapitalize="characters" placeholder="أدخل الكود هنا" style="min-width:0;flex:1;border:2px solid #f0d9a0;border-radius:12px;padding:10px;font:700 15px Arial;text-align:center;text-transform:uppercase;background:#fff;color:#4a2c0f"><button class="btn m" style="flex:0 0 92px" onclick="redeemPromoCode()">مطالبة</button></div><div style="font-size:11px;text-align:center;margin-top:7px;color:#8a6530">50–500 عملة ذهبية · لأول 3000 مطالبة لكل كود</div></div>`}
 async function redeemPromoCode(){const input=$('#promo-code-input');const code=(input?.value||'').trim().toUpperCase().replace(/\s+/g,'');if(!/^[A-Z0-9_-]{4,32}$/.test(code))return toast('أدخل كوداً صحيحاً');const button=input.parentElement.querySelector('button');button.disabled=true;try{const result=await honeyEconomyRequest('redeem_promo_code',{code});const reward=Number(result.reward)||0;S.coins=Number(result.wallet.gold)||0;S.honey=Number(result.wallet.honey)||0;input.value='';logTx('مكافأة كود برومو',reward,'coin');rTop();rTasks();showReward(reward,'coin')}catch(e){const m=e.message||'تعذر استخدام الكود';const messages={promo_code_invalid:'الكود غير صحيح أو انتهت صلاحيته',promo_code_exhausted:'انتهت المقاعد المتاحة لهذا الكود',promo_code_already_used:'لقد استخدمت هذا الكود من قبل'};toast(messages[m]||m)}finally{if(button.isConnected)button.disabled=false}}
 
 function rTasks(){const el=$('#s-tasks'),g=Date.now()>=S.giftAt;
