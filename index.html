@@ -257,6 +257,28 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 // Telegram Mini App initialization
 (function(){const tg=window.Telegram&&window.Telegram.WebApp;if(!tg)return;try{tg.ready();tg.expand();if(tg.setHeaderColor)tg.setHeaderColor('#f5a623');if(tg.setBackgroundColor)tg.setBackgroundColor('#2b1a08');}catch(e){console.warn('Telegram WebApp setup:',e)}})();
 
+// Secure Telegram identity handshake (the server validates Telegram initData).
+(function(){
+ const tg=window.Telegram&&window.Telegram.WebApp;
+ if(!tg||!tg.initData)return;
+ const SUPABASE_URL='https://nmzlxockajdwwshugntl.supabase.co';
+ const SUPABASE_KEY='sb_publishable_dJfy0cygYifc6arAxhfT1w_wM6b3zeZ';
+ fetch(SUPABASE_URL+'/functions/v1/telegram-auth',{
+   method:'POST',
+   headers:{
+     'Content-Type':'application/json',
+     'apikey':SUPABASE_KEY,
+     'Authorization':'Bearer '+SUPABASE_KEY
+   },
+   body:JSON.stringify({initData:tg.initData})
+ }).then(async response=>{
+   const data=await response.json().catch(()=>({}));
+   if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));
+   window.HoneyKingdomPlayer=data.player;
+   window.dispatchEvent(new CustomEvent('honeykingdom:authenticated',{detail:data.player}));
+ }).catch(error=>console.warn('Honey Kingdom account link:',error));
+})();
+
 /* ===== CONFIG: edit economics here only (null = not defined yet) ===== */
 const CONFIG={
  devSimulateAds:true,   // prototype only: simulates a completed rewarded ad
