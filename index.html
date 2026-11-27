@@ -368,9 +368,10 @@ async function honeyEconomyRequest(action,extra={}){
 }
 function applyEconomyResult(result){
  if(result.wallet){S.coins=Number(result.wallet.gold)||0;S.honey=Number(result.wallet.honey)||0;}
- if(result.owned)S.owned=result.owned;
- if(result.last)S.last=result.last;
- if(result.totalProduced!==undefined)S.totalProduced=Number(result.totalProduced)||0;
+ const beeState=result.bees||result;
+ if(beeState.owned)S.owned=beeState.owned;
+ if(beeState.last)S.last=beeState.last;
+ if(beeState.totalProduced!==undefined)S.totalProduced=Number(beeState.totalProduced)||0;
  saveHoneylandProgress();
 }
 async function refreshHoneyEconomy(){
