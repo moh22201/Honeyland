@@ -399,6 +399,7 @@ async function syncHoneylandCloud(){
   honeyCloudReady=true;
   console.info('Honey Kingdom cloud progress is ready');
  }catch(error){
+  honeyCloudStarted=false;
   console.warn('Honey Kingdom cloud load:',error);
  }finally{honeyCloudBusy=false}
 }
@@ -420,7 +421,7 @@ function startHoneylandCloudSync(){
 }
 window.addEventListener('honeykingdom:authenticated',startHoneylandCloudSync);
 if(window.HoneyKingdomPlayer)startHoneylandCloudSync();
-window.setInterval(()=>saveHoneylandCloud(),15000);
+window.setInterval(()=>{if(!honeyCloudReady){honeyCloudStarted=false;startHoneylandCloudSync()}else saveHoneylandCloud()},15000);
 window.addEventListener('pagehide',()=>saveHoneylandCloud(true));
 
 
