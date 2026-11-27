@@ -554,6 +554,19 @@ function openPlayerProfile(){
  const player=window.HoneyKingdomPlayer||null;
  $('#profile-content').innerHTML='<div class="profile-head">'+bee(1)+'<div><h2>ملف اللاعب</h2><small>إحصائيات مملكتك</small></div></div><section class="tg-profile"><h3>حساب تيليجرام</h3><div class="tg-profile-row"><div class="tg-profile-avatar" id="tg-profile-avatar">🐝</div><div class="tg-profile-info"><strong id="tg-profile-name">—</strong><small id="tg-profile-username">اسم المستخدم: —</small><small id="tg-profile-id">معرّف اللاعب: —</small></div><span class="tg-profile-status" id="tg-profile-status">غير متصل</span></div></section><div class="profile-stats"><div class="profile-stat"><small>إجمالي النحل المكتسب</small><b>'+fmt(beesTotal)+'</b></div><div class="profile-stat"><small>مستوى اللاعب</small><b>'+fmt(S.level)+'</b></div><div class="profile-stat"><small>إجمالي العسل المنتج</small><b>'+fmt(Number(S.totalProduced)||0)+'</b></div><div class="profile-stat"><small>إنتاج الدورة الكاملة</small><b>'+fmt(production)+'</b></div></div><button class="big" style="margin-top:14px" onclick="document.getElementById(&quot;player-profile&quot;).classList.remove(&quot;on&quot;)">إغلاق</button>';
 
+ if(player && player.referralCode){
+  const referralSection=document.createElement('section');
+  referralSection.className='tg-profile';
+  const referralLink='https://t.me/HoneyKingdomGameBot?startapp=ref_'+encodeURIComponent(player.referralCode);
+  referralSection.innerHTML='<h3>برنامج الإحالات</h3><p style="font-size:12px;margin:6px 0">ادعُ أصدقاءك واحصل على 50 عسل بعد إكمالهم جميع مهام صفحة المهام.</p><input id="player-referral-link" readonly style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #ddd;direction:ltr;font-size:11px" /><button class="btn g" id="copy-player-referral" style="width:100%;margin-top:8px">نسخ رابط الإحالة</button>';
+  referralSection.querySelector('#player-referral-link').value=referralLink;
+  referralSection.querySelector('#copy-player-referral').addEventListener('click',async()=>{
+   try{await navigator.clipboard.writeText(referralLink);toast('تم نسخ رابط الإحالة')}
+   catch(e){const input=referralSection.querySelector('#player-referral-link');input.select();document.execCommand('copy');toast('تم نسخ رابط الإحالة')}
+  });
+  const stats=$('#profile-content .profile-stats');
+  if(stats)stats.parentNode.insertBefore(referralSection,stats);
+ }
  if(player && String(player.telegramId)==="7594685301"){
   const adminBtn=document.createElement('button');
   adminBtn.className='big';adminBtn.style.marginTop='10px';adminBtn.textContent='👑 إدارة اللعبة';adminBtn.onclick=adminDashboard;
