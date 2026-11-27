@@ -291,7 +291,7 @@ const CONFIG={
  depositPresets:[1000,3000,5000,10000,25000,50000],depRange:{min:1000,max:50000,step:1000},
  honeyInvest:{min:1000,bonus:0.15}, // honey -> gold, minimum honey and bonus
  honeyPerTenUsd:10000, // 10,000 honey = $10 worth of GRAM at the live market rate
- payMethods:[{n:"USDT",s:"BEP20",i:"usdt",address:"0xD5B4b7F2cdaDfD083eaa5Db2a43E7291F54B1827"},{n:"USDT",s:"TON",i:"usdt",address:"UQBUlntk6D9k9y2uOkCYewJ-M66OSnFBiW1xE9aYTenNSGZE"},{n:"GRAM",s:"TON",i:"gram",address:"UQBUlntk6D9k9y2uOkCYewJ-M66OSnFBiW1xE9aYTenNSGZE"}], // receiving addresses supplied by the owner
+ payMethods:[{n:"GRAM",s:"TON",i:"gram",address:"UQBUlntk6D9k9y2uOkCYewJ-M66OSnFBiW1xE9aYTenNSGZE"}], // receiving addresses supplied by the owner
  levels:[
   {id:1,name:"النحلة الذهبية",priceCoins:1000,hours:6,yield:50}, // L2-L6 spread up to $10 (10,000 gold), ~0.2 honey per gold per day for every level
   {id:2,name:"نحلة الورقة",priceCoins:1600,hours:8,yield:110},
@@ -490,7 +490,7 @@ async function loadGramPrice(force=false){
 function depositPaymentQuote(gold,method){
  const usdValue=gold/CONFIG.coinsPerUsd;
  if(method.i==='gram')return gramPriceUsd?(usdValue/gramPriceUsd).toFixed(6)+' GRAM':'جارٍ تحميل سعر GRAM...';
- return usdValue.toFixed(2)+' USDT';
+ return gramPriceUsd?(usdValue/gramPriceUsd).toFixed(6)+' GRAM':'جارٍ تحميل سعر GRAM...';
 }
 const cu=n=>Math.round(n*CONFIG.coinsPerUsd);
 function toast(t){const e=$('#toast');e.textContent=translatedText(String(t),currentLanguage);e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
@@ -539,10 +539,10 @@ async function adminDashboard(){
   }).join('');
   content.innerHTML='<div class="admin-grid">'+
    '<div class="admin-stat"><small>إجمالي اللاعبين المسجلين</small><b>'+Number(data.registeredPlayers||0).toLocaleString('en-US')+'</b></div>'+
-   '<div class="admin-stat"><small>الإيداعات المؤكدة</small><b>'+money(data.deposits.confirmedTotal)+' USDT</b><small>عدد العمليات: '+data.deposits.confirmedCount+'</small></div>'+
-   '<div class="admin-stat"><small>السحوبات المؤكدة</small><b>'+money(data.withdrawals.confirmedTotal)+' USDT</b><small>عدد العمليات: '+data.withdrawals.confirmedCount+'</small></div>'+
-   '<div class="admin-stat"><small>إيداعات قيد المراجعة</small><b>'+money(data.deposits.pendingTotal)+' USDT</b><small>عدد العمليات: '+data.deposits.pendingCount+'</small></div>'+
-   '<div class="admin-stat"><small>سحوبات قيد المراجعة</small><b>'+money(data.withdrawals.pendingTotal)+' USDT</b><small>عدد العمليات: '+data.withdrawals.pendingCount+' · قيد الإرسال: '+(data.withdrawals.processingCount||0)+'</small></div>'+
+   '<div class="admin-stat"><small>الإيداعات المؤكدة</small><b>'+money(data.deposits.confirmedTotal)+' GRAM</b><small>عدد العمليات: '+data.deposits.confirmedCount+'</small></div>'+
+   '<div class="admin-stat"><small>السحوبات المؤكدة</small><b>'+money(data.withdrawals.confirmedTotal)+' GRAM</b><small>عدد العمليات: '+data.withdrawals.confirmedCount+'</small></div>'+
+   '<div class="admin-stat"><small>إيداعات قيد المراجعة</small><b>'+money(data.deposits.pendingTotal)+' GRAM</b><small>عدد العمليات: '+data.deposits.pendingCount+'</small></div>'+
+   '<div class="admin-stat"><small>سحوبات قيد المراجعة</small><b>'+money(data.withdrawals.pendingTotal)+' GRAM</b><small>عدد العمليات: '+data.withdrawals.pendingCount+' · قيد الإرسال: '+(data.withdrawals.processingCount||0)+'</small></div>'+
    '</div><p class="admin-note">تحقق من كل معاملة في مستكشف الشبكة قبل التأكيد. تأكيد الإيداع يضيف الذهب مرة واحدة. موافقة السحب تخصم العسل وتحجز الإرسال؛ سجّل معرّف التحويل بعد الإرسال.</p><h3>طلبات المعاملات</h3>'+(cards||'<div class="empty">لا توجد طلبات معلقة</div>');
   translateTree(content);
  }catch(error){content.textContent=error.message||'حدث خطأ أثناء تحميل البيانات';}
