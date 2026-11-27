@@ -321,7 +321,7 @@ window.setInterval(saveHoneylandProgress,1000);
 const $=s=>document.querySelector(s),L=id=>CONFIG.levels[id-1],ok=l=>l.priceCoins!=null&&l.hours!=null&&l.yield!=null;
 const fmt=n=>Number(n).toLocaleString('en-US'),usd=n=>'$'+(+n).toFixed(2);
 const cu=n=>Math.round(n*CONFIG.coinsPerUsd);
-function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
+function toast(t){const e=$('#toast');e.textContent=translatedText(String(t),currentLanguage);e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
 function bee(i,cls="",w=0){return `<img class="${cls}" src="${IMG.bees[i-1]}" alt="" ${w?`width="${w}"`:''} draggable="false">`}
 const jar=`<svg viewBox="0 0 32 32"><rect x="6" y="3" width="20" height="5" rx="2" fill="#8d5524"/><path d="M7 8h18l2 6v12a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V14z" fill="#ffc93c" stroke="#c97a06" stroke-width="2"/><path d="M7 16h18v10a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4z" fill="#f5a623" opacity=".8"/><path d="M10 12v6" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/></svg>`;
 const coin=`<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#ffc83d" stroke="#b8741a" stroke-width="2.5"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#e8920b" stroke-width="2"/><ellipse cx="16" cy="16" rx="3.4" ry="5" fill="#fff0a8" stroke="#e8920b" stroke-width="1.5"/></svg>`;
@@ -357,14 +357,16 @@ fr:{
 }};
 Object.assign(LANG_DICT.en,EXTRA_LANG.en);
 Object.assign(LANG_DICT.fr,EXTRA_LANG.fr);
+Object.assign(LANG_DICT.en,{"سيتم تفعيلها لاحقاً":"Will be enabled later","لا نحل بعد":"No bees yet","إعلان مكافأة":"Rewarded ad","مكان تكامل مزوّد الإعلانات (تجريبي)":"Ad provider integration placeholder (demo)","الصق":"Paste","إخفاء":"Hide","م":"Lv "});
+Object.assign(LANG_DICT.fr,{"سيتم تفعيلها لاحقاً":"Sera activé ultérieurement","لا نحل بعد":"Aucune abeille","إعلان مكافأة":"Publicité récompensée","مكان تكامل مزوّد الإعلانات (تجريبي)":"Emplacement d’intégration du fournisseur publicitaire (démo)","الصق":"Coller","إخفاء":"Masquer","م":"Niv. "});
 
 let currentLanguage='ar';
 const languageOriginals=new WeakMap();
 let languageObserverBusy=false;
 function translatedText(value,lang){if(lang==='ar')return value;const dict=LANG_DICT[lang];let out=value;Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out}
 function translateTree(root){if(!root)return;const lang=currentLanguage;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!languageOriginals.has(n))languageOriginals.set(n,n.nodeValue);const original=languageOriginals.get(n);const next=translatedText(original,lang);if(n.nodeValue!==next){languageObserverBusy=true;n.nodeValue=next;languageObserverBusy=false}}
- const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>['title','aria-label','placeholder'].forEach(attr=>{if(el.hasAttribute(attr)){const key='langOriginal_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);el.setAttribute(attr,translatedText(el.dataset[key],lang))}}))}
-function setLanguage(lang,announce){if(!LANGS.includes(lang))lang='ar';currentLanguage=lang;try{localStorage.setItem('honeyland-language',lang)}catch(e){}document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const code=document.getElementById('language-code');if(code)code.textContent=lang.toUpperCase();const btn=document.getElementById('language-toggle');if(btn){btn.title=LANG_NAMES[lang]+' · Change language';btn.setAttribute('aria-label',btn.title)}translateTree(document.body);if(announce)toast(LANG_NAMES[lang])}
+ const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>['title','aria-label','placeholder','alt'].forEach(attr=>{if(el.hasAttribute(attr)){const key='langOriginal_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);el.setAttribute(attr,translatedText(el.dataset[key],lang))}}))}
+function setLanguage(lang,announce){if(!LANGS.includes(lang))lang='ar';currentLanguage=lang;try{localStorage.setItem('honeyland-language',lang)}catch(e){}document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const code=document.getElementById('language-code');if(code)code.textContent=lang.toUpperCase();const btn=document.getElementById('language-toggle');if(btn){btn.title=LANG_NAMES[lang]+' · Change language';btn.setAttribute('aria-label',btn.title)}translateTree(document.documentElement);document.title=translatedText('مملكة العسل',lang);if(announce)toast(LANG_NAMES[lang])}
 function cycleLanguage(){const i=LANGS.indexOf(currentLanguage);setLanguage(LANGS[(i+1)%LANGS.length],true)}
 try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes(savedLang))currentLanguage=savedLang}catch(e){}
 // Rendering stays independent from translation support; each screen is translated after it is rendered.
@@ -451,7 +453,7 @@ function showReward(n,k){const cs=['#ff6b9d','#ffd23f','#7ed957','#4cc9f0','#c77
  m.innerHTML=`<div class="rwbox"><div class="rays"></div><div class="rwjar">${k=='coin'?coin:k=='bee'?bee(1):jar}</div>${Array.from({length:18},(_,i)=>`<i class="cf" style="right:${6+i*5}%;background:${cs[i%6]};--dx:${(i%2?1:-1)*(10+i*3)}px;animation-delay:${i*.04}s"></i>`).join('')}<div class="rwt">مبروك!</div><div class="rwa">${k=='coin'?coin:k=='bee'?bee(1):jar}<span>+${fmt(n)}</span></div><div style="font-size:13px;font-weight:700;margin-bottom:10px">${k=='coin'?'تمت إضافة العملات إلى رصيدك':k=='bee'?'نحلة جديدة انضمت إلى حديقتك':'تمت إضافة العسل إلى رصيدك'}</div><button class="big" onclick="$('#rw').classList.remove('on')">رائع</button></div>`;m.classList.add('on')}
 /* ===== live countdown (text/width only, cheap) ===== */
 setInterval(()=>{if(S.tab=='home'){const p=prod(S.sel);if(!p)return;const rb=$('#rb'),d=$('#dt'),t=$('#ct');if(rb)rb.style.display=p.ready?'':'none';if(d)d.style.display=p.ready?'':'none';if(!t)return;
- t.textContent=p.full?'الإنتاج متوقف — اجمع العسل':hms(p.left);$('#pb').style.width=p.pct+'%';$('#cl').textContent='اجمع '+fmt(p.amt);$('#collect').classList.toggle('idle',!p.ready);$('#pb').classList.toggle('full',p.full);$('#pa').textContent=fmt(p.amt)+'/'+fmt(p.cap);$('#pv').textContent=fmt(cvGold(p.amt))}
+ t.textContent=translatedText(p.full?'الإنتاج متوقف — اجمع العسل':hms(p.left),currentLanguage);$('#pb').style.width=p.pct+'%';$('#cl').textContent=translatedText('اجمع',currentLanguage)+' '+fmt(p.amt);$('#collect').classList.toggle('idle',!p.ready);$('#pb').classList.toggle('full',p.full);$('#pa').textContent=fmt(p.amt)+'/'+fmt(p.cap);$('#pv').textContent=fmt(cvGold(p.amt))}
  if(S.tab=='tasks'&&S.tsub=='gift'){const e=$('#gcd');if(e&&Date.now()<S.giftAt)e.textContent=hms(S.giftAt-Date.now());else if(e&&e.textContent!='جاهزة!'&&!$('#gb').classList.contains('open'))rTasks()}},1000);
 
 // Keep the opening screen visible for exactly three seconds, then reveal the game.
