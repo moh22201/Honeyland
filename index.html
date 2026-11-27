@@ -346,6 +346,84 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 document.addEventListener('click',()=>{setTimeout(saveHoneylandProgress,0)},true);
 window.setInterval(saveHoneylandProgress,1000);
 
+/* ===== Telegram-authenticated cloud progress sync ===== */
+const HONEYLAND_CLOUD_URL='https://nmzlxockajdwwshugntl.supabase.co/functions/v1/game-save';
+const HONEYLAND_CLOUD_KEYS=['honey','coins','owned','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level','totalProduced'];
+let honeyCloudReady=false,honeyCloudBusy=false,honeyCloudLast='',honeyCloudStarted=false;
+function honeyCloudState(){
+ const state={};
+ for(const k of HONEYLAND_CLOUD_KEYS)state[k]=S[k];
+ return {version:1,savedAt:Date.now(),state};
+}
+async function honeyCloudRequest(action,save){
+ const tg=window.Telegram&&window.Telegram.WebApp;
+ if(!tg||!tg.initData)throw new Error('Telegram authentication data unavailable');
+ const key='sb_publishable_dJfy0cygYifc6arAxhfT1w_wM6b3zeZ';
+ const response=await fetch(HONEYLAND_CLOUD_URL,{
+  method:'POST',
+  headers:{'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key},
+  body:JSON.stringify({action,initData:tg.initData,...(save?{save}:{})})
+ });
+ const data=await response.json().catch(()=>({}));
+ if(!response.ok||!data.ok)throw new Error(data.error||('Cloud save HTTP '+response.status));
+ return data;
+}
+function applyHoneyCloudSave(save){
+ if(!save||save.version!==1||!save.state||typeof save.state!=='object')return false;
+ const data=save.state;
+ for(const k of HONEYLAND_CLOUD_KEYS){
+  if(data[k]!==undefined&&data[k]!==null)S[k]=data[k];
+ }
+ for(const k of ['owned','last','qty','done','verified']){
+  if(data[k]&&typeof data[k]==='object'&&!Array.isArray(data[k]))S[k]={...S[k],...data[k]};
+ }
+ if(!Number.isFinite(S.honey)||S.honey<0)S.honey=0;
+ if(!Number.isFinite(S.coins)||S.coins<0)S.coins=1000;
+ saveHoneylandProgress();
+ return true;
+}
+async function syncHoneylandCloud(){
+ if(honeyCloudBusy||!window.HoneyKingdomPlayer)return;
+ honeyCloudBusy=true;
+ try{
+  const result=await honeyCloudRequest('load');
+  if(result.save&&result.save.state&&Object.keys(result.save.state).length){
+   applyHoneyCloudSave(result.save);
+   if(typeof rTop==='function')rTop();
+   if(typeof go==='function')go(S.tab||'home');
+   if(typeof setLanguage==='function')try{setLanguage(currentLanguage,false)}catch(_){}
+  }else{
+   await honeyCloudRequest('save',honeyCloudState());
+  }
+  honeyCloudLast=JSON.stringify(honeyCloudState().state);
+  honeyCloudReady=true;
+  console.info('Honey Kingdom cloud progress is ready');
+ }catch(error){
+  console.warn('Honey Kingdom cloud load:',error);
+ }finally{honeyCloudBusy=false}
+}
+async function saveHoneylandCloud(force=false){
+ if(!honeyCloudReady||honeyCloudBusy||!window.HoneyKingdomPlayer)return;
+ const save=honeyCloudState(),snapshot=JSON.stringify(save.state);
+ if(!force&&snapshot===honeyCloudLast)return;
+ honeyCloudBusy=true;
+ try{
+  await honeyCloudRequest('save',save);
+  honeyCloudLast=snapshot;
+ }catch(error){console.warn('Honey Kingdom cloud save:',error)}
+ finally{honeyCloudBusy=false}
+}
+function startHoneylandCloudSync(){
+ if(honeyCloudStarted||!window.HoneyKingdomPlayer)return;
+ honeyCloudStarted=true;
+ syncHoneylandCloud();
+}
+window.addEventListener('honeykingdom:authenticated',startHoneylandCloudSync);
+if(window.HoneyKingdomPlayer)startHoneylandCloudSync();
+window.setInterval(()=>saveHoneylandCloud(),15000);
+window.addEventListener('pagehide',()=>saveHoneylandCloud(true));
+
+
 const $=s=>document.querySelector(s),L=id=>CONFIG.levels[id-1],ok=l=>l.priceCoins!=null&&l.hours!=null&&l.yield!=null;
 const fmt=n=>Number(n).toLocaleString('en-US'),usd=n=>'$'+(+n).toFixed(2);
 const cu=n=>Math.round(n*CONFIG.coinsPerUsd);
