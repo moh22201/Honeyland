@@ -590,7 +590,7 @@ function dset(v){v=Math.max(CONFIG.depRange.min,Math.min(CONFIG.depRange.max,v))
 function wset(v,typing){v=Math.max(0,Math.min(S.honey,v||0));S.wdAmt=v;$('#ws').textContent=fmt(v);$('#wt').textContent=ton(v);if(!typing)$('#wi').value=v||''}
 function cvGold(v){return Math.floor(v*(1+CONFIG.honeyInvest.bonus))}
 function cvset(v){const c=CONFIG.honeyInvest;v=Math.max(c.min,Math.min(Math.floor(S.honey),Math.floor(v)||c.min));S.cvAmt=v;$('#cvv').textContent=fmt(v);$('#cvg').textContent=fmt(cvGold(v));$('#cvr').value=v}
-function cvDo(){const c=CONFIG.honeyInvest,v=S.cvAmt;if(S.honey<c.min||v<c.min||v>S.honey)return toast('الحد الأدنى '+fmt(c.min)+' عسل');const g=cvGold(v);S.honey-=v;S.coins+=g;logTx('استثمار العسل',-v,'honey');logTx('استثمار العسل',g,'coin');S.cvAmt=c.min;rTop();rWallet();showReward(g,'coin')}
+async function cvDo(){const c=CONFIG.honeyInvest,v=S.cvAmt;if(S.honey<c.min||v<c.min||v>S.honey)return toast('الحد الأدنى '+fmt(c.min)+' عسل');try{const result=await honeyEconomyRequest('convert_honey_to_gold',{amount:v});applyEconomyResult(result);const g=Number(result.goldReceived)||0;logTx('استثمار العسل',-v,'honey');logTx('استثمار العسل',g,'coin');S.cvAmt=c.min;rTop();rWallet();showReward(g,'coin')}catch(e){toast('تعذر تحويل العسل؛ تحقق من الرصيد وحاول مجدداً');await refreshHoneyEconomy().catch(()=>{})}}
 function ton(n){return (n/CONFIG.honeyPerTon).toFixed(4)+' TON'}
 const PILEJ=jar.replace('<svg ','<svg class="pile" ');
 function rWallet(){const eq=ton;let h;
