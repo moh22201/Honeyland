@@ -191,9 +191,59 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 .paste{border:0;background:#cfe9b0;border-radius:14px;padding:8px 16px;font:800 15px Cairo;color:#2a6a22;box-shadow:0 3px 0 #a8c98a}
 .lab{font-weight:800;margin:10px 4px 6px}
 .sum{background:#e9f0d8;border-radius:20px;padding:6px 14px;margin:10px 0}.sum div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #c8d4a8;font-weight:700}.sum div:last-child{border:0}
+
+/* ===== Honey Kingdom opening screen ===== */
+#honey-intro{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 32%,#fff7b7 0,#ffd45c 38%,#e88a18 100%);opacity:1;visibility:visible;transition:opacity .45s ease,visibility .45s ease}
+#honey-intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+#honey-intro:before,#honey-intro:after{content:"✿  ✦  ❀  ✧  ✿  ✦  ❀";position:absolute;left:-8%;width:116%;color:#fff7d2;opacity:.72;font-size:clamp(25px,7vw,54px);letter-spacing:18px;white-space:nowrap;animation:intro-drift 12s linear infinite}
+#honey-intro:before{top:7%}#honey-intro:after{bottom:7%;animation-direction:reverse;color:#fff}
+@keyframes intro-drift{to{transform:translateX(8%)}}
+.intro-card{position:relative;width:min(94vw,520px);height:min(88vh,760px);min-height:500px;border:5px solid #fff0ad;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:20px 14px 24px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,245,190,.18));box-shadow:0 16px 45px #7b3e0870,inset 0 0 0 2px #c98219}
+.intro-title{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;color:#713609;font-size:clamp(30px,8vw,48px);font-weight:800;text-shadow:0 3px 0 #ffe7a1,0 5px 12px #9a570b55;line-height:1.1}
+.intro-subtitle{color:#75400c;font-weight:800;font-size:15px;margin-top:4px}
+.intro-queen{position:relative;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;width:100%;min-height:0}
+.intro-crown{font-size:clamp(48px,12vw,76px);filter:drop-shadow(0 4px 2px #a55c0b66);margin-bottom:-12px;z-index:2}
+.intro-throne{font-size:clamp(100px,29vw,170px);line-height:1.05;filter:drop-shadow(0 9px 3px #793b1766);z-index:1}
+.intro-queenbee{font-size:clamp(64px,17vw,94px);position:absolute;top:34%;z-index:3;filter:drop-shadow(0 4px 3px #7d460b88);animation:queen-float 2s ease-in-out infinite}
+@keyframes queen-float{50%{transform:translateY(-7px)}}
+.intro-bee{position:absolute;font-size:clamp(35px,9vw,53px);filter:drop-shadow(0 3px 2px #75400c55);animation:bee-fly 2.5s ease-in-out infinite}
+.intro-bee.b1{top:13%;left:8%}.intro-bee.b2{top:12%;right:8%;animation-delay:.3s}.intro-bee.b3{top:43%;left:1%;animation-delay:.6s}.intro-bee.b4{top:44%;right:1%;animation-delay:.9s}.intro-bee.b5{bottom:13%;left:17%;animation-delay:1.2s}.intro-bee.b6{bottom:13%;right:17%;animation-delay:1.5s}
+@keyframes bee-fly{50%{transform:translate(5px,-10px) rotate(8deg)}}
+.intro-garden{font-size:clamp(23px,6vw,34px);letter-spacing:4px;line-height:1.35;text-shadow:0 2px 3px #9c5b1b55}
+.intro-treasures{font-size:clamp(27px,7vw,39px);letter-spacing:7px;filter:drop-shadow(0 3px 2px #9c5b1b55)}
+.intro-loading{width:min(72%,290px);height:10px;border-radius:20px;background:#fff3c4;overflow:hidden;border:1px solid #b96a0d;box-shadow:0 2px 5px #8c4c1855;margin-top:8px}
+.intro-loading span{display:block;height:100%;width:0;background:linear-gradient(90deg,#f39a13,#ffe56a);border-radius:20px;animation:intro-load 3s linear forwards}
+@keyframes intro-load{to{width:100%}}
+.intro-wait{font-size:12px;color:#75400c;font-weight:700;margin-top:5px}
+@media(max-height:620px){.intro-card{min-height:0;height:94vh;padding:8px}.intro-queen{min-height:160px}.intro-garden{font-size:22px}.intro-treasures{font-size:25px}}
+
 </style>
 </head>
 <body>
+
+<div id="honey-intro" role="status" aria-label="جاري تحميل مملكة العسل">
+  <div class="intro-card">
+    <div>
+      <div class="intro-title">🐝 مملكة العسل 🐝</div>
+      <div class="intro-subtitle">حيث السعادة والوفرة في عالم النحل</div>
+    </div>
+    <div class="intro-queen">
+      <span class="intro-bee b1">🐝</span><span class="intro-bee b2">🐝</span>
+      <span class="intro-bee b3">🐝</span><span class="intro-bee b4">🐝</span>
+      <span class="intro-bee b5">🐝</span><span class="intro-bee b6">🐝</span>
+      <div class="intro-crown">👑</div>
+      <div class="intro-throne">🪑</div>
+      <div class="intro-queenbee">🐝</div>
+    </div>
+    <div class="intro-garden">🌸 🌼 🌺 🌻 🌷 🌼 🌸</div>
+    <div class="intro-treasures">🍯 🍯 💰 🪙 🍯 💵</div>
+    <div>
+      <div class="intro-loading"><span></span></div>
+      <div class="intro-wait">نجهّز عالمك الجميل...</div>
+    </div>
+  </div>
+</div>
+
 <div id="app">
  <header class="top" id="top"></header>
  <main id="main">
@@ -343,6 +393,13 @@ function showReward(n,k){const cs=['#ff6b9d','#ffd23f','#7ed957','#4cc9f0','#c77
 setInterval(()=>{if(S.tab=='home'){const p=prod(S.sel);if(!p)return;const rb=$('#rb'),d=$('#dt'),t=$('#ct');if(rb)rb.style.display=p.ready?'':'none';if(d)d.style.display=p.ready?'':'none';if(!t)return;
  t.textContent=p.full?'الإنتاج متوقف — اجمع العسل':hms(p.left);$('#pb').style.width=p.pct+'%';$('#cl').textContent='اجمع '+fmt(p.amt);$('#collect').classList.toggle('idle',!p.ready);$('#pb').classList.toggle('full',p.full);$('#pa').textContent=fmt(p.amt)+'/'+fmt(p.cap);$('#pv').textContent=fmt(cvGold(p.amt))}
  if(S.tab=='tasks'&&S.tsub=='gift'){const e=$('#gcd');if(e&&Date.now()<S.giftAt)e.textContent=hms(S.giftAt-Date.now());else if(e&&e.textContent!='جاهزة!'&&!$('#gb').classList.contains('open'))rTasks()}},1000);
+
+// Keep the opening screen visible for exactly three seconds, then reveal the game.
+(function(){
+  const intro=document.getElementById('honey-intro');
+  if(!intro)return;
+  window.setTimeout(()=>{intro.classList.add('hide');window.setTimeout(()=>intro.remove(),500);},3000);
+})();
 rTop();go('home');
 </script>
 </body>
