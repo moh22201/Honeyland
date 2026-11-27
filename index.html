@@ -725,7 +725,7 @@ async function submitWithdrawal(){
  if(button)button.disabled=true;
  try{
   const result=await financialRequest('create_withdrawal',{honeyAmount:amount,destinationAddress:address});
-  S.wdAmt=0;await refreshHoneyEconomy();rTop();rWallet();
+  S.wdAmt=0;await refreshHoneyEconomy().catch(()=>{});rTop();rWallet();
   const status=document.getElementById('withdraw-status');
   if(status)status.textContent='تم تسجيل طلب السحب: '+Number(result.gramAmount).toFixed(8)+' GRAM · المدة المتوقعة 5 دقائق إلى 6 ساعات';
   toast('تم إرسال طلب السحب للمراجعة اليدوية');
