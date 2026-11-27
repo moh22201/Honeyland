@@ -281,6 +281,37 @@ const Backend={async verifyTelegram(id){return {member:CONFIG.devSimulateAds}}};
 /* ===== STATE ===== */
 const H=3600e3,S={honey:0,coins:1000,owned:{1:0,2:0,3:0,4:0,5:0,6:0},last:{},sel:1,tab:'home',
  qty:{1:1,2:1,3:1,4:1,5:1,6:1},giftAt:0,done:{},verified:{},tsub:'tasks',wsub:'main',log:[],depAmt:1000,cvAmt:1000,wdAmt:0,adCount:0,level:1};
+/* ===== Local progress persistence ===== */
+const HONEYLAND_SAVE_KEY='honeyland-save-v1';
+(function restoreProgress(){
+ try{
+  const raw=localStorage.getItem(HONEYLAND_SAVE_KEY);
+  if(!raw)return;
+  const saved=JSON.parse(raw);
+  if(!saved||saved.version!==1||!saved.state)return;
+  const data=saved.state;
+  for(const k of ['honey','coins','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level']){
+   if(data[k]!==undefined&&data[k]!==null)S[k]=data[k];
+  }
+  for(const k of ['owned','last','qty','done','verified']){
+   if(data[k]&&typeof data[k]==='object'&&!Array.isArray(data[k]))S[k]={...S[k],...data[k]};
+  }
+  if(!Number.isFinite(S.honey)||S.honey<0)S.honey=0;
+  if(!Number.isFinite(S.coins)||S.coins<0)S.coins=1000;
+ }catch(e){console.warn('Could not restore Honeyland progress',e)}
+})();
+function saveHoneylandProgress(){
+ try{
+  const state={};
+  for(const k of ['honey','coins','owned','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level'])state[k]=S[k];
+  localStorage.setItem(HONEYLAND_SAVE_KEY,JSON.stringify({version:1,savedAt:Date.now(),state}));
+ }catch(e){console.warn('Could not save Honeyland progress',e)}
+}
+window.addEventListener('pagehide',saveHoneylandProgress);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveHoneylandProgress()});
+document.addEventListener('click',()=>{setTimeout(saveHoneylandProgress,0)},true);
+window.setInterval(saveHoneylandProgress,1000);
+
 const $=s=>document.querySelector(s),L=id=>CONFIG.levels[id-1],ok=l=>l.priceCoins!=null&&l.hours!=null&&l.yield!=null;
 const fmt=n=>Number(n).toLocaleString('en-US'),usd=n=>'$'+(+n).toFixed(2);
 const cu=n=>Math.round(n*CONFIG.coinsPerUsd);
