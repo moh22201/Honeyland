@@ -285,7 +285,7 @@ const Ads={show(placement){ // must resolve {completed:true,token} only after a 
 const Backend={async verifyTelegram(id){return {member:CONFIG.devSimulateAds}}}; // replace with Supabase edge function
 /* ===== STATE ===== */
 const H=3600e3,S={honey:0,coins:1000,owned:{1:0,2:0,3:0,4:0,5:0,6:0},last:{},sel:1,tab:'home',
- qty:{1:1,2:1,3:1,4:1,5:1,6:1},giftAt:0,done:{},verified:{},tsub:'tasks',wsub:'main',log:[],depAmt:1000,cvAmt:1000,wdAmt:0,adCount:0,level:1};
+ qty:{1:1,2:1,3:1,4:1,5:1,6:1},giftAt:0,done:{},verified:{},tsub:'tasks',wsub:'main',log:[],depAmt:1000,cvAmt:1000,wdAmt:0,adCount:0,level:1,totalProduced:0};
 /* ===== Local progress persistence ===== */
 const HONEYLAND_SAVE_KEY='honeyland-save-v1';
 (function restoreProgress(){
@@ -295,7 +295,7 @@ const HONEYLAND_SAVE_KEY='honeyland-save-v1';
   const saved=JSON.parse(raw);
   if(!saved||saved.version!==1||!saved.state)return;
   const data=saved.state;
-  for(const k of ['honey','coins','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level']){
+  for(const k of ['honey','coins','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level','totalProduced']){
    if(data[k]!==undefined&&data[k]!==null)S[k]=data[k];
   }
   for(const k of ['owned','last','qty','done','verified']){
@@ -335,7 +335,7 @@ const prod=id=>{const l=L(id),n=S.owned[id];if(!ok(l)||!n)return null;const t=S.
 const hms=ms=>{const s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return[h,m,s%60].map(v=>String(v).padStart(2,'0')).join(':')};
 /* ===== RENDER ===== */
 function rTop(){$('#top').innerHTML=`<button class="avatar" onclick="openPlayerProfile()" aria-label="ملف اللاعب">${bee(1,'')}<span class="lvb">${S.level}</span></button><span class="sp"></span><div class="chip">${jar}<span>${fmt(S.honey)}</span></div><div class="chip">${coin}<span>${fmt(S.coins)}</span></div><div class="top-tools"><button class="top-tool" onclick="languageNotice('en')" title="English" aria-label="English">🇬🇧</button><button class="top-tool" onclick="languageNotice('fr')" title="Français" aria-label="Français">🇫🇷</button><button class="top-tool" id="theme-toggle" onclick="toggleHoneyTheme()" title="تبديل النهار والليل" aria-label="تبديل النهار والليل">${document.getElementById('app').classList.contains('dark')?'☀️':'🌙'}</button></div><button class="giftbtn ${Date.now()>=S.giftAt?'rdy':''}" onclick="go('tasks');S.tsub='gift';rTasks()" aria-label="الهدية اليومية">${giftI}</button>}
-function openPlayerProfile(){const beesTotal=Object.values(S.owned).reduce((a,n)=>a+(Number(n)||0),0);const production=CONFIG.levels.reduce((a,l)=>a+(Number(S.owned[l.id])||0)*(Number(l.yield)||0),0);$('#profile-content').innerHTML='<div class="profile-head">'+bee(1)+'<div><h2>ملف اللاعب</h2><small>إحصائيات مملكتك</small></div></div><div class="profile-stats"><div class="profile-stat"><small>إجمالي النحل المكتسب</small><b>'+fmt(beesTotal)+'</b></div><div class="profile-stat"><small>مستوى اللاعب</small><b>'+fmt(S.level)+'</b></div><div class="profile-stat" style="grid-column:1/-1"><small>الإنتاج الإجمالي لكل دورة</small><b>'+fmt(production)+' عسل</b><small>عند اكتمال دورة الإنتاج لجميع النحل</small></div></div><button class="big" style="margin-top:14px" onclick="document.getElementById(\'player-profile\').classList.remove(\'on\')">إغلاق</button>';$('#player-profile').classList.add('on')}
+function openPlayerProfile(){const beesTotal=Object.values(S.owned).reduce((a,n)=>a+(Number(n)||0),0);const production=CONFIG.levels.reduce((a,l)=>a+(Number(S.owned[l.id])||0)*(Number(l.yield)||0),0);$('#profile-content').innerHTML='<div class="profile-head">'+bee(1)+'<div><h2>ملف اللاعب</h2><small>إحصائيات مملكتك</small></div></div><div class="profile-stats"><div class="profile-stat"><small>إجمالي النحل المكتسب</small><b>'+fmt(beesTotal)+'</b></div><div class="profile-stat"><small>مستوى اللاعب</small><b>'+fmt(S.level)+'</b></div><div class="profile-stat"><small>إجمالي العسل المنتج</small><b>'+fmt(Number(S.totalProduced)||0)+'</b></div><div class="profile-stat"><small>إنتاج الدورة الكاملة</small><b>'+fmt(production)+'</b></div></div><button class="big" style="margin-top:14px" onclick="document.getElementById(\'player-profile\').classList.remove(\'on\')">إغلاق</button>';$('#player-profile').classList.add('on')}
 function toggleHoneyTheme(){const app=$('#app'),dark=app.classList.toggle('dark');try{localStorage.setItem('honeyland-theme',dark?'dark':'light')}catch(e){}const b=$('#theme-toggle');if(b)b.textContent=dark?'☀️':'🌙'}
 function languageNotice(lang){toast(lang==='en'?'English interface will be enabled in a later update':'L’interface française sera activée dans une prochaine mise à jour')}
 (function(){try{if(localStorage.getItem('honeyland-theme')==='dark')$('#app').classList.add('dark')}catch(e){}})();
@@ -343,7 +343,7 @@ function rNav(){$('#nav').innerHTML=NAV.map(([k,t,p])=>`<button class="${S.tab==
 function go(t){S.tab=t;document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on',e.id=='s-'+t));rNav();({home:rHome,shop:rShop,tasks:rTasks,wallet:rWallet})[t]()}
 async function collect(){const p=prod(S.sel);if(!p)return;if(!p.ready)return toast('لم يتراكم عسل بعد، حاول بعد قليل');const r=await Ads.show('collect_honey');
  if(!r.completed||!r.token){toast('لم يكتمل الإعلان — لا توجد مكافأة');return}
- const q=prod(S.sel);if(!q||!q.ready)return;S.honey+=q.amt;S.last[S.sel]=Date.now();drops();logTx('جمع العسل',q.amt,'honey');rTop();rHome();showReward(q.amt)}
+ const q=prod(S.sel);if(!q||!q.ready)return;S.honey+=q.amt;S.totalProduced=(Number(S.totalProduced)||0)+q.amt;S.last[S.sel]=Date.now();drops();logTx('جمع العسل',q.amt,'honey');rTop();rHome();showReward(q.amt)}
 function drops(){const a=$('#app');for(let i=0;i<9;i++){const d=document.createElement('div');d.className='drop';d.innerHTML=jar;d.style.cssText=`top:60%;right:${35+Math.random()*30}%;--dx:${-(Math.random()*160)}px;--dy:${-380-Math.random()*60}px;animation-delay:${i*.06}s`;a.appendChild(d);setTimeout(()=>d.remove(),1500)}}
 function rShop(){$('#s-shop').innerHTML=`<div class="pad"><h2 class="title">متجر النحل</h2>${CONFIG.levels.map(l=>{const o=S.owned[l.id],rem=CONFIG.maxPerLevel-o,q=Math.min(S.qty[l.id],Math.max(1,rem)),k=ok(l);
  return `<div class="card ${k?'':'lock'}"><div class="cardhead"><div class="art">${bee(l.id)}</div><div style="flex:1"><span class="badge">المستوى ${l.id}</span><h3>${l.name}</h3><div style="font-size:12px">تملك: <b>${o}</b> · المتبقي: <b>${rem}</b></div></div></div>
