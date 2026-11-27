@@ -308,7 +308,7 @@ const HONEYLAND_SAVE_KEY='honeyland-save-v1';
 function saveHoneylandProgress(){
  try{
   const state={};
-  for(const k of ['honey','coins','owned','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level'])state[k]=S[k];
+  for(const k of ['honey','coins','owned','last','sel','qty','giftAt','done','verified','log','depAmt','cvAmt','wdAmt','adCount','level','totalProduced'])state[k]=S[k];
   localStorage.setItem(HONEYLAND_SAVE_KEY,JSON.stringify({version:1,savedAt:Date.now(),state}));
  }catch(e){console.warn('Could not save Honeyland progress',e)}
 }
