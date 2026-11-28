@@ -721,10 +721,11 @@ LANG_DICT.en['إيداع GRAM · تحقق آلي']='GRAM deposit · automatic ve
 
 let currentLanguage='en';
 const languageOriginals=new WeakMap();
+const languageAttributeOriginals=new WeakMap();
 let languageObserverBusy=false;
-function translatedText(value,lang){const dict=LANG_DICT[lang]||LANG_DICT.en;let out=String(value);Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out.replace(/[\u0600-\u06FF]+/g,'').replace(/\s{2,}/g,' ').trim()}
+function translatedText(value,lang){const dict=LANG_DICT[lang]||LANG_DICT.en;let out=String(value);Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out.replace(/[\\u0600-\\u06FF]+/g,'').replace(/\\s{2,}/g,' ').trim()}
 function translateTree(root){if(!root)return;const lang=currentLanguage;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!languageOriginals.has(n))languageOriginals.set(n,n.nodeValue);const original=languageOriginals.get(n);const next=translatedText(original,lang);if(n.nodeValue!==next){languageObserverBusy=true;n.nodeValue=next;languageObserverBusy=false}}
- const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>['title','aria-label','placeholder','alt'].forEach(attr=>{if(el.hasAttribute(attr)){const key='langOriginal_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);el.setAttribute(attr,translatedText(el.dataset[key],lang))}}))}
+ const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>{let originals=languageAttributeOriginals.get(el);if(!originals){originals=new Map();languageAttributeOriginals.set(el,originals)}['title','aria-label','placeholder','alt'].forEach(attr=>{if(el.hasAttribute(attr)){if(!originals.has(attr))originals.set(attr,el.getAttribute(attr));el.setAttribute(attr,translatedText(originals.get(attr),lang))}})})}
 function setLanguage(lang,announce){if(!LANGS.includes(lang))lang='en';currentLanguage=lang;try{localStorage.setItem('honeyland-language',lang)}catch(e){}document.documentElement.lang=lang;document.documentElement.dir='ltr';const code=document.getElementById('language-code');if(code)code.textContent=lang.toUpperCase();const btn=document.getElementById('language-toggle');if(btn){btn.title=LANG_NAMES[lang]+' · Change language';btn.setAttribute('aria-label',btn.title)}translateTree(document.documentElement);document.title='Honey Kingdom';if(announce)toast(LANG_NAMES[lang])}
 function cycleLanguage(){const i=LANGS.indexOf(currentLanguage);setLanguage(LANGS[(i+1)%LANGS.length],true)}
 try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes(savedLang))currentLanguage=savedLang;else currentLanguage='en'}catch(e){}
@@ -748,8 +749,11 @@ async function collect(){
   if(!p.ready){toast('لم يتراكم عسل بعد، حاول بعد قليل');return;}
   try{adPassed=localStorage.getItem(passKey)==='1'}catch(_){}
   if(!adPassed){
-   if(!(await showHoneyRewardAd('collect',{allowNoFill:true})))return;
-   try{localStorage.setItem(passKey,'1')}catch(_){}
+   // Ads are optional for collection: try to show one, but never block a ready harvest.
+   try{
+    const adShown=await showHoneyRewardAd('collect',{allowNoFill:true});
+    if(adShown)try{localStorage.setItem(passKey,'1')}catch(_){}
+   }catch(adError){console.warn('Optional collection ad unavailable:',adError)}
   }
   const result=await honeyEconomyRequest('collect_honey',{level});
   if(!result||result.ok!==true||!Number.isFinite(Number(result.amount))||Number(result.amount)<1)throw new Error('invalid_collection_result');
