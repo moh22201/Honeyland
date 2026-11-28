@@ -821,6 +821,10 @@ function sceneSVG(){let pol='';for(let i=0;i<16;i++)pol+=`<circle class="pol" cx
 <g id="rb" style="display:none;cursor:pointer" onclick="collect()"><g class="rbub"><rect x="148" y="22" width="64" height="48" rx="14" fill="#fff" stroke="#f0d9a0" stroke-width="3"/><path d="M172 70l8 10 8-10z" fill="#fff"/>${jar.replace('<svg ','<svg x="158" y="26" width="40" height="40" ')}</g></g>`}
 function hudHTML(){const a=[1,2,3,4,5,6].filter(i=>S.owned[i]);
  return a.length?a.map(i=>`<div class="hb"><img src="${IMG.bees[i-1]}" alt=""><span class="hl">${i}</span><b>×${S.owned[i]}</b></div>`).join(''):'<div class="hb"><b>لا نحل بعد</b></div>'}
+LANG_DICT.en['SPECIAL OFFER']='SPECIAL OFFER';LANG_DICT.fr['SPECIAL OFFER']='OFFRE SPÉCIALE';
+LANG_DICT.en['FIRST 1,000 DEPOSITORS']='FIRST 1,000 DEPOSITORS';LANG_DICT.fr['FIRST 1,000 DEPOSITORS']='LES 1 000 PREMIERS DÉPOSANTS';
+LANG_DICT.en['DOUBLE GOLD ON EVERY DEPOSIT']='DOUBLE GOLD ON EVERY DEPOSIT';LANG_DICT.fr['DOUBLE GOLD ON EVERY DEPOSIT']='OR DOUBLÉ À CHAQUE DÉPÔT';
+LANG_DICT.en['For the first 1,000 confirmed depositors']='For the first 1,000 confirmed depositors';LANG_DICT.fr['For the first 1,000 confirmed depositors']='Pour les 1 000 premiers dépôts confirmés';
 let goldDoublePromo={active:false,eligible:false,eligibleCount:0,cap:1000,remaining:1000};
 async function refreshGoldDoublePromo(){
  try{const p=await financialRequest('promotion_status');goldDoublePromo=p;renderGoldDoublePromo();}
