@@ -326,9 +326,9 @@ const CONFIG={
   {id:5,name:"نحلة الفارس",priceCoins:6300,hours:18,yield:950},
   {id:6,name:"النحلة الملكية",priceCoins:10000,hours:24,yield:2000}],
  tasks:[
-  {id:"reg_platform",title:"التسجيل في المنصة وتوثيق الحساب",description:"سجّل في المنصة وأكمل توثيق الحساب",link:"https://i.mec.me/?c=3m3w1e4a",reward:3000,pending:true},
-  {id:"reg_kingdom_bot",title:"التسجيل في البوت",description:"التسجيل في بوت Kingdom Harvest",link:"https://t.me/KingdomHarvestGameBot",reward:500,pending:true},
-  {id:"reg_chicken_bot",title:"التسجيل في البوت",description:"التسجيل في بوت Chicken Land",link:"https://t.me/ChickenLandBot?start=78870",reward:600,pending:true},
+  {id:"reg_platform",title:"التسجيل في المنصة وتوثيق الحساب",description:"سجّل في المنصة وأكمل توثيق الحساب",link:"https://i.mec.me/?c=3m3w1e4a",reward:3000},
+  {id:"reg_kingdom_bot",title:"التسجيل في البوت",description:"التسجيل في بوت Kingdom Harvest",link:"https://t.me/KingdomHarvestGameBot",reward:500},
+  {id:"reg_chicken_bot",title:"التسجيل في البوت",description:"التسجيل في بوت Chicken Land",link:"https://t.me/ChickenLandBot?start=78870",reward:600},
   {id:"reg_moovalley_bot",title:"التسجيل في البوت",description:"التسجيل في بوت Moo Valley",link:"https://t.me/MooValleyBot?startapp=6868",reward:600,pending:true},
   {id:"tg_channel",title:"الانضمام إلى قناة تيليجرام",description:"انضم إلى قناة Korabet على تيليجرام",link:"https://t.me/Korabet0",reward:500},
   {id:"promo_channel",title:"الانضمام إلى قناة الأكواد",description:"انضم إلى قناة الأكواد للحصول على رموز المكافآت اليومية",link:"https://t.me/Honeylandcods",reward:100}],
@@ -760,7 +760,7 @@ function rTasks(){const el=$('#s-tasks'),g=Date.now()>=S.giftAt;
  <div class="cd" id="gcd">${g?'جاهزة!':hms(S.giftAt-Date.now())}</div><p style="margin:4px 0 10px;font-size:13px">المكافأة: من ${fmt(CONFIG.dailyGift.min)} إلى ${fmt(CONFIG.dailyGift.max)} عملة ذهبية · هدية كل 24 ساعة</p><button class="big" id="gbtn" onclick="gift()" ${g?'':'disabled'}>افتح الهدية<small>مشاهدة إعلان</small></button></div>`;
  el.innerHTML=h+'</div>';try{translateTree(el)}catch(e){}if(S.tsub==='tasks')loadHoneyAdProgress();}
 function join(id){const t=CONFIG.tasks.find(x=>x.id==id);if(!t.link)return toast('رابط تيليجرام غير مضبوط بعد');window.open(t.link,'_blank')}
-async function verify(id){toast('جاري التحقق...');try{const r=await Backend.verifyTelegram(id);if(r.member){S.verified[id]=true;rTasks();toast('تم التحقق من العضوية')}else toast('لم يتم العثور على عضويتك')}catch(e){toast(e.message||'تعذر التحقق حالياً')}}
+async function verify(id){if(!['tg_channel','promo_channel'].includes(id))return toast('التحقق الآلي من التسجيل في هذه المنصة أو البوت غير متاح بعد.');toast('جاري التحقق...');try{const r=await Backend.verifyTelegram(id);if(r.member){S.verified[id]=true;rTasks();toast('تم التحقق من العضوية')}else toast('لم يتم العثور على عضويتك')}catch(e){toast(e.message||'تعذر التحقق حالياً')}}
 async function claimTask(id){if(!['tg_channel','promo_channel'].includes(id))return toast('هذه المكافأة لم تُفعّل بعد');if(!(await showHoneyRewardAd('task')))return;try{const action=id==='promo_channel'?'claim_promo_channel_task':'claim_channel_task';const result=await honeyEconomyRequest(action);const reward=Number(result.reward)||0;S.coins=Number(result.wallet.gold)||0;S.honey=Number(result.wallet.honey)||0;S.done[id]=true;saveHoneylandProgress();rTop();rTasks();showReward(reward,'coin')}catch(e){const m=e.message||'تعذر استلام المكافأة';toast(m.includes('task_already_claimed')?'سبق استلام مكافأة هذه المهمة':m)}}
 async function gift(){try{const result=await honeyEconomyRequest('claim_daily_gift');const reward=Number(result.reward)||0;S.coins=Number(result.wallet.gold);S.honey=Number(result.wallet.honey);S.giftAt=Date.parse(result.nextClaimAt)||Date.now()+86400000;$('#gb').classList.remove('shake');$('#gb').classList.add('open');logTx('الهدية اليومية',reward,'coin');rTop();setTimeout(()=>{showReward(reward,'coin');rTasks()},900)}catch(e){toast('الهدية اليومية غير جاهزة بعد');await refreshHoneyEconomy().catch(()=>{})}}
 
