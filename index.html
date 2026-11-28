@@ -326,8 +326,6 @@ const CONFIG={
   {id:5,name:"نحلة الفارس",priceCoins:6300,hours:18,yield:950},
   {id:6,name:"النحلة الملكية",priceCoins:10000,hours:24,yield:2000}],
  tasks:[
-  {id:"reg_platform",title:"التسجيل في المنصة وتوثيق الحساب",description:"سجّل في المنصة وأكمل توثيق الحساب",link:"https://i.mec.me/?c=3m3w1e4a",reward:3000},
-  {id:"reg_growora",title:"التسجيل في Growora",description:"افتح لعبة Growora وسجّل حسابك",link:"https://t.me/KingdomHarvestGameBot",reward:600},
   {id:"tg_channel",title:"الانضمام إلى قناة تيليجرام",description:"انضم إلى قناة Korabet على تيليجرام",link:"https://t.me/Korabet0",reward:500},
   {id:"promo_channel",title:"الانضمام إلى قناة الأكواد",description:"انضم إلى قناة الأكواد للحصول على رموز المكافآت اليومية",link:"https://t.me/Honeylandcods",reward:100}],
  dailyGift:{min:10,max:200,everyHours:24}
@@ -750,7 +748,7 @@ async function collect(){
   if(!p.ready){toast('لم يتراكم عسل بعد، حاول بعد قليل');return;}
   try{adPassed=localStorage.getItem(passKey)==='1'}catch(_){}
   if(!adPassed){
-   if(!(await showHoneyRewardAd('collect')))return;
+   if(!(await showHoneyRewardAd('collect',{allowNoFill:true})))return;
    try{localStorage.setItem(passKey,'1')}catch(_){}
   }
   const result=await honeyEconomyRequest('collect_honey',{level});
@@ -809,18 +807,35 @@ function getHoneyAdsgramController(){
 async function showHoneyRewardAd(placement,options={}){
  if(honeyAdsgramBusy)return false;
  honeyAdsgramBusy=true;
+ let controller=null,noFill=false,skipped=false,onNoFill=()=>{noFill=true},onSkip=()=>{skipped=true};
  try{
-  const controller=getHoneyAdsgramController();
+  controller=getHoneyAdsgramController();
+  if(typeof controller.addEventListener==='function'){
+   controller.addEventListener('onBannerNotFound',onNoFill);
+   controller.addEventListener('onSkip',onSkip);
+  }
   const result=await controller.show();
   if(result&&result.done===true&&!result.error)return true;
-  toast('Please watch the ad until it finishes.');
+  if(options.allowNoFill&&noFill&&!skipped){toast('لا يوجد إعلان متاح الآن؛ تم السماح بجمع العسل.');return true;}
+  toast('أكمل الإعلان حتى النهاية قبل جمع العسل.');
   return false;
  }catch(error){
   console.warn('AdsGram '+placement+' ad:',error);
-  if(options.allowNoFill){toast('Ad is not available right now.');return false;}
-  toast('Ad is unavailable. Please try again.');
+  const sdkUnavailable=error?.message==='AdsGram SDK is not ready';
+  const noInventory=noFill||/banner.?not.?found|no.?fill|no.?ad.?available/i.test(String(error?.description||''));
+  if(options.allowNoFill&&!skipped&&(sdkUnavailable||noInventory)){
+   toast('الإعلان غير متاح حالياً؛ يمكنك جمع العسل الآن.');
+   return true;
+  }
+  toast('الإعلان غير متاح. حاول مرة أخرى.');
   return false;
- }finally{honeyAdsgramBusy=false;}
+ }finally{
+  if(controller&&typeof controller.removeEventListener==='function'){
+   controller.removeEventListener('onBannerNotFound',onNoFill);
+   controller.removeEventListener('onSkip',onSkip);
+  }
+  honeyAdsgramBusy=false;
+ }
 }
 
 /* ===== ad task + wallet; financial requests are recorded and reviewed server-side ===== */
