@@ -239,6 +239,7 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 .admin-box{width:92%;max-width:420px;max-height:86vh;overflow:auto;background:linear-gradient(#fff9e8,#ffedbd);border:3px solid #f0c969;color:#4a2c0f;box-shadow:0 7px 0 #c97a06}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.admin-stat{background:#fff;border:2px solid #f0d9a0;border-radius:14px;padding:12px 8px;text-align:center}.admin-stat small{display:block;color:#98713b;font-size:12px}.admin-stat b{display:block;font-size:21px;margin-top:5px;overflow-wrap:anywhere}.admin-note{font-size:11px;color:#79562b;text-align:center;margin:12px 0 0}
 </style>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 </head>
 <body>
 
@@ -484,6 +485,10 @@ function startHoneylandCloudSync(){
  syncHoneylandCloud();
 }
 window.addEventListener('honeykingdom:authenticated',startHoneylandCloudSync);
+let honeyKingdomOpenAdShown=false;
+async function showHoneyKingdomOpenAd(){if(honeyKingdomOpenAdShown)return;honeyKingdomOpenAdShown=true;await showHoneyRewardAd('app-open',{allowNoFill:true});}
+window.addEventListener('honeykingdom:authenticated',showHoneyKingdomOpenAd);
+if(window.HoneyKingdomPlayer)showHoneyKingdomOpenAd();
 if(window.HoneyKingdomPlayer)startHoneylandCloudSync();
 window.setInterval(()=>{if(!honeyCloudReady){honeyCloudStarted=false;startHoneylandCloudSync()}else saveHoneylandCloud()},15000);
 window.addEventListener('pagehide',()=>saveHoneylandCloud(true));
@@ -735,7 +740,7 @@ try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes
 (function(){try{if(localStorage.getItem('honeyland-theme')==='dark')$('#app').classList.add('dark')}catch(e){}})();
 function rNav(){$('#nav').innerHTML=NAV.map(([k,t,p])=>`<button class="${S.tab==k?'on':''}" onclick="go('${k}')" aria-label="${t}"><svg viewBox="0 0 32 32">${p}</svg></button>`).join('')}
 function go(t){S.tab=t;document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on',e.id=='s-'+t));rNav();({home:rHome,shop:rShop,tasks:rTasks,wallet:rWallet})[t]();try{translateTree(document.getElementById('s-'+t));translateTree(document.getElementById('nav'))}catch(e){console.warn('Language rendering skipped',e)}}
-async function collect(){const p=prod(S.sel);if(!p)return;if(!p.ready)return toast('لم يتراكم عسل بعد، حاول بعد قليل');
+async function collect(){const p=prod(S.sel);if(!p)return;if(!p.ready)return toast('لم يتراكم عسل بعد، حاول بعد قليل');if(!(await showHoneyRewardAd('collect')))return;
  try{const result=await honeyEconomyRequest('collect_honey',{level:S.sel});applyEconomyResult(result);const amount=Number(result.amount)||0;drops();logTx('جمع العسل',amount,'honey');rTop();rHome();showReward(amount)}catch(e){toast(e.message==='honey_not_ready'?'لم يتراكم عسل بعد، حاول بعد قليل':'تعذر جمع العسل، حدّث اللعبة وحاول مجدداً')}}
 function drops(){const a=$('#app');for(let i=0;i<9;i++){const d=document.createElement('div');d.className='drop';d.innerHTML=jar;d.style.cssText=`top:60%;right:${35+Math.random()*30}%;--dx:${-(Math.random()*160)}px;--dy:${-380-Math.random()*60}px;animation-delay:${i*.06}s`;a.appendChild(d);setTimeout(()=>d.remove(),1500)}}
 function rShop(){$('#s-shop').innerHTML=`<div class="pad"><h2 class="title">${translatedText('متجر النحل',currentLanguage)}</h2>${CONFIG.levels.map(l=>{const o=S.owned[l.id],rem=CONFIG.maxPerLevel-o,q=Math.min(S.qty[l.id],Math.max(1,rem)),k=ok(l);
@@ -744,7 +749,7 @@ function rShop(){$('#s-shop').innerHTML=`<div class="pad"><h2 class="title">${tr
  ${k?`<div class="qty"><button onclick="sq(${l.id},-1)">−</button><input type="range" min="1" max="${Math.max(1,rem)}" value="${q}" oninput="S.qty[${l.id}]=+this.value;tot(${l.id})" id="r${l.id}"><button onclick="sq(${l.id},1)">+</button><span class="qn" id="q${l.id}">${q}</span></div><div class="tot" id="t${l.id}"></div><div class="buy"><button class="btn h" ${rem?'':'disabled'} onclick="buy(${l.id},'coin')">${translatedText('شراء بالذهب',currentLanguage)}</button></div>`:`<div class="empty" style="margin:0">${translatedText('القيم غير محددة بعد — تُضبط في ملف الإعدادات',currentLanguage)}</div>`}</div>`}).join('')}</div>`;CONFIG.levels.forEach(l=>ok(l)&&tot(l.id))}
 function sq(id,d){const r=$('#r'+id);r.value=Math.min(+r.max,Math.max(1,+r.value+d));S.qty[id]=+r.value;tot(id)}
 function tot(id){const l=L(id),q=S.qty[id];$('#q'+id).textContent=q;$('#t'+id).textContent=translatedText('الإجمالي:',currentLanguage)+' '+fmt(q*l.priceCoins)+' '+translatedText('ذهب',currentLanguage)}
-async function buy(id,m){const l=L(id),q=Math.min(S.qty[id],CONFIG.maxPerLevel-S.owned[id]);if(q<1)return;
+async function buy(id,m){const l=L(id),q=Math.min(S.qty[id],CONFIG.maxPerLevel-S.owned[id]);if(q<1)return;if(!(await showHoneyRewardAd('buy')))return;
  try{const result=await honeyEconomyRequest('buy_bees',{level:id,quantity:q});applyEconomyResult(result);S.qty[id]=1;logTx(`شراء ${q} نحلة`,-q*l.priceCoins,'coin');toast(`تم شراء ${q} نحلة وظهرت في الحديقة`);rTop();rShop();rHome()}catch(e){toast(e.message==='insufficient_gold'?'رصيد الذهب غير كافٍ':e.message==='bee_limit_reached'?'وصلت للحد الأقصى':'تعذر تنفيذ الشراء، حاول مجدداً')}}
 
 function promoCodeHTML(){return `<div class="card" style="border-color:#f5c04a"><h3 style="font-size:17px;margin-bottom:6px">🎟️ ادخل كود برومو</h3><div style="font-size:12px;margin-bottom:8px">أدخل الكود الذي نشرته قناة الأكواد ثم اضغط مطالبة</div><div style="display:flex;gap:7px"><input id="promo-code-input" type="text" maxlength="32" autocomplete="off" autocapitalize="characters" placeholder="أدخل الكود هنا" style="min-width:0;flex:1;border:2px solid #f0d9a0;border-radius:12px;padding:10px;font:700 15px Arial;text-align:center;text-transform:uppercase;background:#fff;color:#4a2c0f"><button class="btn m" style="flex:0 0 92px" onclick="redeemPromoCode()">مطالبة</button></div><div style="font-size:11px;text-align:center;margin-top:7px;color:#8a6530">50–500 عملة ذهبية · لأول 3000 مطالبة لكل كود</div></div>`}
@@ -759,8 +764,35 @@ function rTasks(){const el=$('#s-tasks'),g=Date.now()>=S.giftAt;
  el.innerHTML=h+'</div>';try{translateTree(el)}catch(e){}}
 function join(id){const t=CONFIG.tasks.find(x=>x.id==id);if(!t.link)return toast('رابط تيليجرام غير مضبوط بعد');window.open(t.link,'_blank')}
 async function verify(id){toast('جاري التحقق...');try{const r=await Backend.verifyTelegram(id);if(r.member){S.verified[id]=true;rTasks();toast('تم التحقق من العضوية')}else toast('لم يتم العثور على عضويتك')}catch(e){toast(e.message||'تعذر التحقق حالياً')}}
-async function claimTask(id){if(!['tg_channel','promo_channel'].includes(id))return toast('هذه المكافأة لم تُفعّل بعد');try{const action=id==='promo_channel'?'claim_promo_channel_task':'claim_channel_task';const result=await honeyEconomyRequest(action);const reward=Number(result.reward)||0;S.coins=Number(result.wallet.gold)||0;S.honey=Number(result.wallet.honey)||0;S.done[id]=true;saveHoneylandProgress();rTop();rTasks();showReward(reward,'coin')}catch(e){const m=e.message||'تعذر استلام المكافأة';toast(m.includes('task_already_claimed')?'سبق استلام مكافأة هذه المهمة':m)}}
+async function claimTask(id){if(!['tg_channel','promo_channel'].includes(id))return toast('هذه المكافأة لم تُفعّل بعد');if(!(await showHoneyRewardAd('task')))return;try{const action=id==='promo_channel'?'claim_promo_channel_task':'claim_channel_task';const result=await honeyEconomyRequest(action);const reward=Number(result.reward)||0;S.coins=Number(result.wallet.gold)||0;S.honey=Number(result.wallet.honey)||0;S.done[id]=true;saveHoneylandProgress();rTop();rTasks();showReward(reward,'coin')}catch(e){const m=e.message||'تعذر استلام المكافأة';toast(m.includes('task_already_claimed')?'سبق استلام مكافأة هذه المهمة':m)}}
 async function gift(){try{const result=await honeyEconomyRequest('claim_daily_gift');const reward=Number(result.reward)||0;S.coins=Number(result.wallet.gold);S.honey=Number(result.wallet.honey);S.giftAt=Date.parse(result.nextClaimAt)||Date.now()+86400000;$('#gb').classList.remove('shake');$('#gb').classList.add('open');logTx('الهدية اليومية',reward,'coin');rTop();setTimeout(()=>{showReward(reward,'coin');rTasks()},900)}catch(e){toast('الهدية اليومية غير جاهزة بعد');await refreshHoneyEconomy().catch(()=>{})}}
+
+/* AdsGram Reward integration */
+const HONEY_ADSGRAM_BLOCK_ID='62309';
+let honeyAdsgramController=null,honeyAdsgramLoading=null,honeyAdsgramBusy=false;
+function getHoneyAdsgramController(){
+ if(honeyAdsgramController)return honeyAdsgramController;
+ if(!window.Adsgram||typeof window.Adsgram.init!=='function')throw new Error('AdsGram SDK is not ready');
+ honeyAdsgramController=window.Adsgram.init({blockId:HONEY_ADSGRAM_BLOCK_ID,debug:false});
+ return honeyAdsgramController;
+}
+async function showHoneyRewardAd(placement,options={}){
+ if(honeyAdsgramBusy)return false;
+ honeyAdsgramBusy=true;
+ try{
+  const controller=getHoneyAdsgramController();
+  const result=await controller.show();
+  if(result&&result.done===true&&!result.error)return true;
+  toast('Please watch the ad until it finishes.');
+  return false;
+ }catch(error){
+  console.warn('AdsGram '+placement+' ad:',error);
+  if(options.allowNoFill){toast('Ad is not available right now.');return false;}
+  toast('Ad is unavailable. Please try again.');
+  return false;
+ }finally{honeyAdsgramBusy=false;}
+}
+
 /* ===== ad task + wallet; financial requests are recorded and reviewed server-side ===== */
 
 const TON_DEPOSIT_ADDRESS='UQBUlntk6D9k9y2uOkCYewJ-M66OSnFBiW1xE9aYTenNSGZE';
@@ -792,7 +824,7 @@ function na(){toast('غير مفعّل بعد — القواعد المالية 
 function logTx(title,amt,kind){S.log.unshift({t:Date.now(),title,amt,kind});S.log.length=Math.min(S.log.length,30)}
 function adTaskHTML(){const a=CONFIG.adTask,n=S.adCount,d=S.done.adbee,r=n>=a.count;
  return `<div class="card"><div class="task"><div class="ic" style="background:#fff3c4">${bee(a.level)}</div><div style="flex:1"><h3 style="font-size:16px">${translatedText("شاهد",currentLanguage)} ${a.count} ${translatedText("إعلانات واحصل على نحلة",currentLanguage)}</h3><div style="font-size:12px">${translatedText("نحلة المستوى",currentLanguage)} ${a.level} · ${translatedText("مرة واحدة",currentLanguage)}</div></div></div>${d?'<div class="done" style="text-align:center;margin-top:8px">تم استلام النحلة</div>':`<div class="bar"><i style="width:${Math.min(100,n/a.count*100)}%"></i></div><div class="cts" style="margin-bottom:6px">${n} / ${a.count}</div><button class="btn m" style="width:100%" onclick="${r?'claimAdBee()':'watchAd()'}">${r?'استلام النحلة':'مشاهدة إعلان'}</button>`}</div>`}
-async function watchAd(){toast('مشاهدة الإعلانات والمكافآت ستتاح بعد ربط مزود إعلانات موثوق');}
+async function watchAd(){if(!(await showHoneyRewardAd('ad-task')))return;S.adCount=Math.min(CONFIG.adTask.count,Number(S.adCount||0)+1);saveHoneylandProgress();rTasks();toast('تم تسجيل مشاهدة الإعلان');}
 function claimAdBee(){toast('مكافآت الإعلانات متوقفة حتى ربط مزود إعلانات موثوق');}
 const TXI={honey:()=>jar,coin:()=>coin,bee:()=>bee(1)};
 const PAYI={usdt:'<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#26a17b" stroke="#12664d" stroke-width="2"/><path d="M11 12h18v4h-7v3c5 .3 8 1.3 8 2.6s-3 2.3-8 2.6V31h-4v-6.8c-5-.3-8-1.3-8-2.6s3-2.3 8-2.6v-3h-7z" fill="#fff"/></svg>',gram:'<svg viewBox="0 0 40 40"><path d="M6 10q14-6 28 0L20 35z" fill="#2aa7ff" stroke="#0b5fb0" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 12v23M8 12l12 13 12-13" stroke="#fff" stroke-width="2" fill="none"/></svg>'};
