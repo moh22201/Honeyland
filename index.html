@@ -12,9 +12,9 @@
 @media (prefers-color-scheme:dark){:root{--ink:#4a2c0f}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;background:#2b1a08;font-family:Arial,system-ui,sans-serif;color:var(--ink);overflow:hidden}
+html,body{width:100%;height:100%;min-height:100%;margin:0;background:#2b1a08;font-family:Arial,system-ui,sans-serif;color:var(--ink);overflow:hidden}
 h1,h2,h3,.disp{font-family:"Arial",Arial,sans-serif;margin:0}
-#app{position:relative;max-width:480px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
+#app{position:relative;width:100%;max-width:480px;height:var(--tg-viewport-stable-height,100dvh);min-height:100dvh;margin:0 auto;display:flex;flex-direction:column;background:var(--cream);overflow:hidden;isolation:isolate}#top{position:relative;display:flex!important;flex:0 0 auto;min-height:58px;z-index:10}main{position:relative;display:block;flex:1 1 auto;min-height:0;overflow:hidden}#nav{position:absolute;display:flex!important;z-index:20;bottom:calc(8px + env(safe-area-inset-bottom,0px));}
 .top-tool.lang-switch{position:relative;display:flex;align-items:center;justify-content:center;gap:2px;font-size:19px}.top-tool.lang-switch small{font:800 9px Arial;background:#fff;border-radius:6px;padding:1px 3px;color:#75430b}.top{display:flex;gap:6px;align-items:center;padding:8px 10px;background:linear-gradient(#ffd45e,#f5a623);border-bottom:3px solid var(--honey-d);z-index:5}
 .avatar{width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.2);flex:none}
 .lvl{font-size:12px;font-weight:700;line-height:1.1}
