@@ -8,7 +8,7 @@
 
 <script src="https://unpkg.com/@tonconnect/ui@5.0.4/dist/tonconnect-ui.min.js"></script>
 <style>
-:root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22)}
+:root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root{--ink:#4a2c0f}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -242,6 +242,12 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 </head>
 <body>
+
+<div id="honey-intro" role="status" aria-label="جاري تحميل مملكة العسل">
+  <div class="intro-card">
+    <img src="file_0000000061e481f49d37cd953f816b9d.png" alt="مملكة العسل — الملكة والنحلات الست في بستان الزهور" draggable="false">
+  </div>
+</div>
 
 <div id="app">
  <header class="top" id="top"></header>
@@ -715,11 +721,10 @@ LANG_DICT.en['إيداع GRAM · تحقق آلي']='GRAM deposit · automatic ve
 
 let currentLanguage='en';
 const languageOriginals=new WeakMap();
-const languageAttributeOriginals=new WeakMap();
 let languageObserverBusy=false;
-function translatedText(value,lang){const dict=LANG_DICT[lang]||LANG_DICT.en;let out=String(value);Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out.replace(/[\\u0600-\\u06FF]+/g,'').replace(/\\s{2,}/g,' ').trim()}
+function translatedText(value,lang){const dict=LANG_DICT[lang]||LANG_DICT.en;let out=String(value);Object.keys(dict).sort((a,b)=>b.length-a.length).forEach(k=>{out=out.split(k).join(dict[k])});return out.replace(/[\u0600-\u06FF]+/g,'').replace(/\s{2,}/g,' ').trim()}
 function translateTree(root){if(!root)return;const lang=currentLanguage;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!languageOriginals.has(n))languageOriginals.set(n,n.nodeValue);const original=languageOriginals.get(n);const next=translatedText(original,lang);if(n.nodeValue!==next){languageObserverBusy=true;n.nodeValue=next;languageObserverBusy=false}}
- const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>{let originals=languageAttributeOriginals.get(el);if(!originals){originals=new Map();languageAttributeOriginals.set(el,originals)}['title','aria-label','placeholder','alt'].forEach(attr=>{if(el.hasAttribute(attr)){if(!originals.has(attr))originals.set(attr,el.getAttribute(attr));el.setAttribute(attr,translatedText(originals.get(attr),lang))}})})}
+ const els=root.nodeType===1?[root,...root.querySelectorAll('*')]:[];els.forEach(el=>['title','aria-label','placeholder','alt'].forEach(attr=>{if(el.hasAttribute(attr)){const key='langOriginal_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);el.setAttribute(attr,translatedText(el.dataset[key],lang))}}))}
 function setLanguage(lang,announce){if(!LANGS.includes(lang))lang='en';currentLanguage=lang;try{localStorage.setItem('honeyland-language',lang)}catch(e){}document.documentElement.lang=lang;document.documentElement.dir='ltr';const code=document.getElementById('language-code');if(code)code.textContent=lang.toUpperCase();const btn=document.getElementById('language-toggle');if(btn){btn.title=LANG_NAMES[lang]+' · Change language';btn.setAttribute('aria-label',btn.title)}translateTree(document.documentElement);document.title='Honey Kingdom';if(announce)toast(LANG_NAMES[lang])}
 function cycleLanguage(){const i=LANGS.indexOf(currentLanguage);setLanguage(LANGS[(i+1)%LANGS.length],true)}
 try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes(savedLang))currentLanguage=savedLang;else currentLanguage='en'}catch(e){}
@@ -743,16 +748,8 @@ async function collect(){
   if(!p.ready){toast('لم يتراكم عسل بعد، حاول بعد قليل');return;}
   try{adPassed=localStorage.getItem(passKey)==='1'}catch(_){}
   if(!adPassed){
-   // Ads are optional: a missing or stalled ad must never block a ready harvest.
-   let adTimer;
-   try{
-    const adShown=await Promise.race([
-     showHoneyRewardAd('collect',{allowNoFill:true}),
-     new Promise(resolve=>{adTimer=setTimeout(()=>resolve(false),5000)})
-    ]);
-    if(adShown)try{localStorage.setItem(passKey,'1')}catch(_){}
-   }catch(adError){console.warn('Optional collection ad unavailable:',adError)}
-   finally{if(adTimer)clearTimeout(adTimer)}
+   if(!(await showHoneyRewardAd('collect')))return;
+   try{localStorage.setItem(passKey,'1')}catch(_){}
   }
   const result=await honeyEconomyRequest('collect_honey',{level});
   if(!result||result.ok!==true||!Number.isFinite(Number(result.amount))||Number(result.amount)<1)throw new Error('invalid_collection_result');
@@ -810,35 +807,18 @@ function getHoneyAdsgramController(){
 async function showHoneyRewardAd(placement,options={}){
  if(honeyAdsgramBusy)return false;
  honeyAdsgramBusy=true;
- let controller=null,noFill=false,skipped=false,onNoFill=()=>{noFill=true},onSkip=()=>{skipped=true};
  try{
-  controller=getHoneyAdsgramController();
-  if(typeof controller.addEventListener==='function'){
-   controller.addEventListener('onBannerNotFound',onNoFill);
-   controller.addEventListener('onSkip',onSkip);
-  }
+  const controller=getHoneyAdsgramController();
   const result=await controller.show();
   if(result&&result.done===true&&!result.error)return true;
-  if(options.allowNoFill&&noFill&&!skipped){toast('لا يوجد إعلان متاح الآن؛ تم السماح بجمع العسل.');return true;}
-  toast('أكمل الإعلان حتى النهاية قبل جمع العسل.');
+  toast('Please watch the ad until it finishes.');
   return false;
  }catch(error){
   console.warn('AdsGram '+placement+' ad:',error);
-  const sdkUnavailable=error?.message==='AdsGram SDK is not ready';
-  const noInventory=noFill||/banner.?not.?found|no.?fill|no.?ad.?available/i.test(String(error?.description||''));
-  if(options.allowNoFill&&!skipped&&(sdkUnavailable||noInventory)){
-   toast('الإعلان غير متاح حالياً؛ يمكنك جمع العسل الآن.');
-   return true;
-  }
-  toast('الإعلان غير متاح. حاول مرة أخرى.');
+  if(options.allowNoFill){toast('Ad is not available right now.');return false;}
+  toast('Ad is unavailable. Please try again.');
   return false;
- }finally{
-  if(controller&&typeof controller.removeEventListener==='function'){
-   controller.removeEventListener('onBannerNotFound',onNoFill);
-   controller.removeEventListener('onSkip',onSkip);
-  }
-  honeyAdsgramBusy=false;
- }
+ }finally{honeyAdsgramBusy=false;}
 }
 
 /* ===== ad task + wallet; financial requests are recorded and reviewed server-side ===== */
@@ -1014,7 +994,12 @@ setInterval(()=>{if(S.tab=='home'){const p=prod(S.sel);if(!p)return;const rb=$('
  t.textContent=translatedText(p.full?'الإنتاج متوقف — اجمع العسل':hms(p.left),currentLanguage);$('#pb').style.width=p.pct+'%';$('#cl').textContent=translatedText('اجمع',currentLanguage)+' '+fmt(p.amt);$('#collect').classList.toggle('idle',!p.ready);$('#pb').classList.toggle('full',p.full);$('#pa').textContent=fmt(p.amt)+'/'+fmt(p.cap);$('#pv').textContent=fmt(cvGold(p.amt))}
  if(S.tab=='tasks'&&S.tsub=='gift'){const e=$('#gcd');if(e&&Date.now()<S.giftAt)e.textContent=hms(S.giftAt-Date.now());else if(e&&e.textContent!='جاهزة!'&&!$('#gb').classList.contains('open'))rTasks()}},1000);
 
-// The broken static intro artwork was removed; show the game immediately.
+// Keep the opening screen visible for exactly three seconds, then reveal the game.
+(function(){
+  const intro=document.getElementById('honey-intro');
+  if(!intro)return;
+  window.setTimeout(()=>{intro.classList.add('hide');window.setTimeout(()=>intro.remove(),500);},3000);
+})();
 // Re-translate dynamically rebuilt screens and components after each render.
 const _rHome=rHome,_rShop=rShop,_rTasks=rTasks,_rWallet=rWallet,_rPanel=rPanel,_showReward=showReward,_tot=tot;
 rHome=function(){_rHome();translateTree(document.getElementById('s-home'))};
