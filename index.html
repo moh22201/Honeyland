@@ -243,12 +243,6 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 </head>
 <body>
 
-<div id="honey-intro" role="status" aria-label="جاري تحميل مملكة العسل">
-  <div class="intro-card">
-    <img src="file_0000000061e481f49d37cd953f816b9d.png" alt="مملكة العسل — الملكة والنحلات الست في بستان الزهور" draggable="false">
-  </div>
-</div>
-
 <div id="app">
  <header class="top" id="top"></header>
  <main id="main">
@@ -1020,12 +1014,7 @@ setInterval(()=>{if(S.tab=='home'){const p=prod(S.sel);if(!p)return;const rb=$('
  t.textContent=translatedText(p.full?'الإنتاج متوقف — اجمع العسل':hms(p.left),currentLanguage);$('#pb').style.width=p.pct+'%';$('#cl').textContent=translatedText('اجمع',currentLanguage)+' '+fmt(p.amt);$('#collect').classList.toggle('idle',!p.ready);$('#pb').classList.toggle('full',p.full);$('#pa').textContent=fmt(p.amt)+'/'+fmt(p.cap);$('#pv').textContent=fmt(cvGold(p.amt))}
  if(S.tab=='tasks'&&S.tsub=='gift'){const e=$('#gcd');if(e&&Date.now()<S.giftAt)e.textContent=hms(S.giftAt-Date.now());else if(e&&e.textContent!='جاهزة!'&&!$('#gb').classList.contains('open'))rTasks()}},1000);
 
-// Keep the opening screen visible for exactly three seconds, then reveal the game.
-(function(){
-  const intro=document.getElementById('honey-intro');
-  if(!intro)return;
-  window.setTimeout(()=>{intro.classList.add('hide');window.setTimeout(()=>intro.remove(),500);},3000);
-})();
+// The broken static intro artwork was removed; show the game immediately.
 // Re-translate dynamically rebuilt screens and components after each render.
 const _rHome=rHome,_rShop=rShop,_rTasks=rTasks,_rWallet=rWallet,_rPanel=rPanel,_showReward=showReward,_tot=tot;
 rHome=function(){_rHome();translateTree(document.getElementById('s-home'))};
