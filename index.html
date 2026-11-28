@@ -485,10 +485,7 @@ function startHoneylandCloudSync(){
  syncHoneylandCloud();
 }
 window.addEventListener('honeykingdom:authenticated',startHoneylandCloudSync);
-let honeyKingdomOpenAdShown=false;
-async function showHoneyKingdomOpenAd(){if(honeyKingdomOpenAdShown)return;honeyKingdomOpenAdShown=true;await showHoneyRewardAd('app-open',{allowNoFill:true});}
-window.addEventListener('honeykingdom:authenticated',showHoneyKingdomOpenAd);
-if(window.HoneyKingdomPlayer)showHoneyKingdomOpenAd();
+// App-open ads require a separate AdsGram Interstitial block ID.
 if(window.HoneyKingdomPlayer)startHoneylandCloudSync();
 window.setInterval(()=>{if(!honeyCloudReady){honeyCloudStarted=false;startHoneylandCloudSync()}else saveHoneylandCloud()},15000);
 window.addEventListener('pagehide',()=>saveHoneylandCloud(true));
@@ -824,7 +821,7 @@ function na(){toast('غير مفعّل بعد — القواعد المالية 
 function logTx(title,amt,kind){S.log.unshift({t:Date.now(),title,amt,kind});S.log.length=Math.min(S.log.length,30)}
 function adTaskHTML(){const a=CONFIG.adTask,n=S.adCount,d=S.done.adbee,r=n>=a.count;
  return `<div class="card"><div class="task"><div class="ic" style="background:#fff3c4">${bee(a.level)}</div><div style="flex:1"><h3 style="font-size:16px">${translatedText("شاهد",currentLanguage)} ${a.count} ${translatedText("إعلانات واحصل على نحلة",currentLanguage)}</h3><div style="font-size:12px">${translatedText("نحلة المستوى",currentLanguage)} ${a.level} · ${translatedText("مرة واحدة",currentLanguage)}</div></div></div>${d?'<div class="done" style="text-align:center;margin-top:8px">تم استلام النحلة</div>':`<div class="bar"><i style="width:${Math.min(100,n/a.count*100)}%"></i></div><div class="cts" style="margin-bottom:6px">${n} / ${a.count}</div><button class="btn m" style="width:100%" onclick="${r?'claimAdBee()':'watchAd()'}">${r?'استلام النحلة':'مشاهدة إعلان'}</button>`}</div>`}
-async function watchAd(){if(!(await showHoneyRewardAd('ad-task')))return;S.adCount=Math.min(CONFIG.adTask.count,Number(S.adCount||0)+1);saveHoneylandProgress();rTasks();toast('تم تسجيل مشاهدة الإعلان');}
+async function watchAd(){toast('Ad task rewards will be enabled after secure reward verification is configured.');}
 function claimAdBee(){toast('مكافآت الإعلانات متوقفة حتى ربط مزود إعلانات موثوق');}
 const TXI={honey:()=>jar,coin:()=>coin,bee:()=>bee(1)};
 const PAYI={usdt:'<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#26a17b" stroke="#12664d" stroke-width="2"/><path d="M11 12h18v4h-7v3c5 .3 8 1.3 8 2.6s-3 2.3-8 2.6V31h-4v-6.8c-5-.3-8-1.3-8-2.6s3-2.3 8-2.6v-3h-7z" fill="#fff"/></svg>',gram:'<svg viewBox="0 0 40 40"><path d="M6 10q14-6 28 0L20 35z" fill="#2aa7ff" stroke="#0b5fb0" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 12v23M8 12l12 13 12-13" stroke="#fff" stroke-width="2" fill="none"/></svg>'};
