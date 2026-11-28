@@ -8,13 +8,13 @@
 
 <script src="https://unpkg.com/@tonconnect/ui@5.0.4/dist/tonconnect-ui.min.js"></script>
 <style>
-:root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22)}
+:root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root{--ink:#4a2c0f}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;min-height:100%;margin:0;background:#2b1a08;font-family:Arial,system-ui,sans-serif;color:var(--ink);overflow:hidden}
+html,body{height:100%;margin:0;background:#2b1a08;font-family:Arial,system-ui,sans-serif;color:var(--ink);overflow:hidden}
 h1,h2,h3,.disp{font-family:"Arial",Arial,sans-serif;margin:0}
-#app{position:relative;width:100%;max-width:480px;height:var(--tg-viewport-stable-height,100dvh);min-height:100dvh;margin:0 auto;display:flex;flex-direction:column;background:var(--cream);overflow:hidden;isolation:isolate}#top{position:relative;display:flex!important;flex:0 0 auto;min-height:58px;z-index:10}main{position:relative;display:block;flex:1 1 auto;min-height:0;overflow:hidden}#nav{position:absolute;display:flex!important;z-index:20;bottom:calc(8px + env(safe-area-inset-bottom,0px));}
+#app{position:relative;max-width:480px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
 .top-tool.lang-switch{position:relative;display:flex;align-items:center;justify-content:center;gap:2px;font-size:19px}.top-tool.lang-switch small{font:800 9px Arial;background:#fff;border-radius:6px;padding:1px 3px;color:#75430b}.top{display:flex;gap:6px;align-items:center;padding:8px 10px;background:linear-gradient(#ffd45e,#f5a623);border-bottom:3px solid var(--honey-d);z-index:5}
 .avatar{width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.2);flex:none}
 .lvl{font-size:12px;font-weight:700;line-height:1.1}
@@ -207,7 +207,6 @@ body{user-select:none;-webkit-user-select:none;overscroll-behavior:none;touch-ac
 .admin-box{width:92%;max-width:420px;max-height:86vh;overflow:auto;background:linear-gradient(#fff9e8,#ffedbd);border:3px solid #f0c969;color:#4a2c0f;box-shadow:0 7px 0 #c97a06}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.admin-stat{background:#fff;border:2px solid #f0d9a0;border-radius:14px;padding:12px 8px;text-align:center}.admin-stat small{display:block;color:#98713b;font-size:12px}.admin-stat b{display:block;font-size:21px;margin-top:5px;overflow-wrap:anywhere}.admin-note{font-size:11px;color:#79562b;text-align:center;margin:12px 0 0}
 </style>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>try{const tg=window.Telegram&&window.Telegram.WebApp;if(tg){tg.ready();tg.expand();}}catch(e){console.warn("Telegram viewport setup skipped",e)}</script>
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 </head>
 <body>
