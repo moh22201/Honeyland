@@ -749,11 +749,16 @@ async function collect(){
   if(!p.ready){toast('لم يتراكم عسل بعد، حاول بعد قليل');return;}
   try{adPassed=localStorage.getItem(passKey)==='1'}catch(_){}
   if(!adPassed){
-   // Ads are optional for collection: try to show one, but never block a ready harvest.
+   // Ads are optional: a missing or stalled ad must never block a ready harvest.
+   let adTimer;
    try{
-    const adShown=await showHoneyRewardAd('collect',{allowNoFill:true});
+    const adShown=await Promise.race([
+     showHoneyRewardAd('collect',{allowNoFill:true}),
+     new Promise(resolve=>{adTimer=setTimeout(()=>resolve(false),5000)})
+    ]);
     if(adShown)try{localStorage.setItem(passKey,'1')}catch(_){}
    }catch(adError){console.warn('Optional collection ad unavailable:',adError)}
+   finally{if(adTimer)clearTimeout(adTimer)}
   }
   const result=await honeyEconomyRequest('collect_honey',{level});
   if(!result||result.ok!==true||!Number.isFinite(Number(result.amount))||Number(result.amount)<1)throw new Error('invalid_collection_result');
