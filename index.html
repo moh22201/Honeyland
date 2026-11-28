@@ -735,8 +735,35 @@ try{const savedLang=localStorage.getItem('honeyland-language');if(LANGS.includes
 (function(){try{if(localStorage.getItem('honeyland-theme')==='dark')$('#app').classList.add('dark')}catch(e){}})();
 function rNav(){$('#nav').innerHTML=NAV.map(([k,t,p])=>`<button class="${S.tab==k?'on':''}" onclick="go('${k}')" aria-label="${t}"><svg viewBox="0 0 32 32">${p}</svg></button>`).join('')}
 function go(t){S.tab=t;document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on',e.id=='s-'+t));rNav();({home:rHome,shop:rShop,tasks:rTasks,wallet:rWallet})[t]();try{translateTree(document.getElementById('s-'+t));translateTree(document.getElementById('nav'))}catch(e){console.warn('Language rendering skipped',e)}}
-async function collect(){const p=prod(S.sel);if(!p)return;if(!p.ready)return toast('لم يتراكم عسل بعد، حاول بعد قليل');if(!(await showHoneyRewardAd('collect')))return;
- try{const result=await honeyEconomyRequest('collect_honey',{level:S.sel});applyEconomyResult(result);const amount=Number(result.amount)||0;drops();logTx('جمع العسل',amount,'honey');rTop();rHome();showReward(amount)}catch(e){toast(e.message==='honey_not_ready'?'لم يتراكم عسل بعد، حاول بعد قليل':'تعذر جمع العسل، حدّث اللعبة وحاول مجدداً')}}
+let honeyCollectBusy=false;
+function honeyCollectPassKey(level){return 'honeyland-collect-ad-pass-'+String(level)}
+async function collect(){
+ if(honeyCollectBusy)return;
+ const level=Number(S.sel),p=prod(level);if(!p)return;
+ if(!p.ready)return toast('لم يتراكم عسل بعد، حاول بعد قليل');
+ honeyCollectBusy=true;
+ const passKey=honeyCollectPassKey(level);
+ let adPassed=false;
+ try{
+  try{adPassed=localStorage.getItem(passKey)==='1'}catch(_){}
+  if(!adPassed){
+   if(!(await showHoneyRewardAd('collect')))return;
+   try{localStorage.setItem(passKey,'1')}catch(_){}
+  }
+  const result=await honeyEconomyRequest('collect_honey',{level});
+  applyEconomyResult(result);
+  try{localStorage.removeItem(passKey)}catch(_){}
+  const amount=Number(result.amount)||0;
+  drops();logTx('جمع العسل',amount,'honey');rTop();rHome();showReward(amount);
+ }catch(e){
+  if(e.message==='honey_not_ready'){
+   await refreshHoneyEconomy().catch(()=>{});
+   toast('لم يصبح العسل جاهزاً بعد. اكتمل الإعلان، ولن نطلب إعلاناً آخر عند إعادة المحاولة.');
+  }else{
+   toast('تعذر جمع العسل الآن. اكتمل الإعلان ولن تحتاج إلى مشاهدته مجدداً عند إعادة المحاولة.');
+  }
+ }finally{honeyCollectBusy=false}
+}
 function drops(){const a=$('#app');for(let i=0;i<9;i++){const d=document.createElement('div');d.className='drop';d.innerHTML=jar;d.style.cssText=`top:60%;right:${35+Math.random()*30}%;--dx:${-(Math.random()*160)}px;--dy:${-380-Math.random()*60}px;animation-delay:${i*.06}s`;a.appendChild(d);setTimeout(()=>d.remove(),1500)}}
 function rShop(){$('#s-shop').innerHTML=`<div class="pad"><h2 class="title">${translatedText('متجر النحل',currentLanguage)}</h2>${CONFIG.levels.map(l=>{const o=S.owned[l.id],rem=CONFIG.maxPerLevel-o,q=Math.min(S.qty[l.id],Math.max(1,rem)),k=ok(l);
  return `<div class="card ${k?'':'lock'}"><div class="cardhead"><div class="art">${bee(l.id)}</div><div style="flex:1"><span class="badge">${translatedText('المستوى',currentLanguage)} ${l.id}</span><h3>${translatedText(l.name,currentLanguage)}</h3><div style="font-size:12px">${translatedText('تملك:',currentLanguage)} <b>${o}</b> · ${translatedText('المتبقي:',currentLanguage)} <b>${rem}</b></div></div></div>
