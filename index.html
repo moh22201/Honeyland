@@ -8,8 +8,7 @@
 
 <script src="https://unpkg.com/@tonconnect/ui@5.0.4/dist/tonconnect-ui.min.js"></script>
 <style>
-:root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22);
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--ink:#4a2c0f;--cream:#fff6dc;--honey:#f5a623;--honey-d:#c97a06;--leaf:#4caf50;--leaf-d:#2e7d32;--panel:#fffaf0;--line:#f0d9a0;--sky:#9fdcff;--shadow:0 6px 0 rgba(120,70,0,.22)}
 @media (prefers-color-scheme:dark){:root{--ink:#4a2c0f}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -490,7 +489,7 @@ const NAV=[["home","الرئيسية",`<defs><linearGradient id="nh" x1="0" y1="
 ["wallet","المحفظة",`<defs><linearGradient id="nw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8be26a"/><stop offset="1" stop-color="#2f9e3a"/></linearGradient><radialGradient id="nc" cx=".35" cy=".3"><stop offset="0" stop-color="#fff3a0"/><stop offset="1" stop-color="#f0a010"/></radialGradient></defs><circle cx="11" cy="8" r="5" fill="url(#nc)" stroke="#a8651a" stroke-width="1.6"/><rect x="3" y="10" width="26" height="18" rx="5" fill="url(#nw)" stroke="#1f6b2a" stroke-width="2"/><path d="M3 15h26" stroke="#1f6b2a" stroke-width="2"/><circle cx="23" cy="21.5" r="4" fill="url(#nc)" stroke="#a8651a" stroke-width="1.6"/>`]];
 /* ===== PRODUCTION (timestamp based, survives reload/tab sleep) ===== */
 const prod=id=>{const l=L(id),n=S.owned[id];if(!ok(l)||!n)return null;const t=S.last[id]??(S.last[id]=Date.now()),el=Date.now()-t,total=l.hours*H;
- const pct=Math.min(100,el/total*100),amt=Math.floor(n*l.yield*pct/100);return{n,left:Math.max(0,total-el),pct,cap:n*l.yield,amt,full:el>=total,ready:amt>=1}};
+ const pct=Math.min(100,el/total*100),amt=Math.max(1,Math.floor(n*l.yield*pct/100));return{n,left:Math.max(0,total-el),pct,cap:n*l.yield,amt,full:el>=total,ready:true}};
 const hms=ms=>{const s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return[h,m,s%60].map(v=>String(v).padStart(2,'0')).join(':')};
 /* ===== RENDER ===== */
 function rTop(){$('#top').innerHTML=`<button class="avatar" onclick="openPlayerProfile()" aria-label="Player profile">${bee(1,'')}<span class="lvb">${S.level}</span></button><span class="sp"></span><div class="chip">${jar}<span>${fmt(S.honey)}</span></div><div class="chip">${coin}<span>${fmt(S.coins)}</span></div><div class="top-tools"><button class="top-tool lang-switch" id="language-toggle" onclick="cycleLanguage()" title="Change language" aria-label="Change language">🌐<small id="language-code">EN</small></button><button class="top-tool" id="theme-toggle" onclick="toggleHoneyTheme()" title="تبديل النهار والليل" aria-label="تبديل النهار والليل">${document.getElementById('app').classList.contains('dark')?'☀️':'🌙'}</button></div><button class="giftbtn ${Date.now()>=S.giftAt?'rdy':''}" onclick="go('tasks');S.tsub='gift';rTasks()" aria-label="Daily gift">${giftI}</button>`;try{translateTree($('#top'))}catch(e){}}
